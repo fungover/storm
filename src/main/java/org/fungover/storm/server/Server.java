@@ -1,36 +1,37 @@
 package org.fungover.storm.server;
 
-import org.fungover.storm.client.ClientThread;
+import org.fungover.storm.client.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
-    private ServerSocket serverSocket;
     private final int port;
+    private ExecutorService executorService;
 
     public Server(int port) {
         this.port = port;
     }
 
     public void start() {
-        try {
-            serverSocket = new ServerSocket(port);
-            while (true) {
-                new ClientThread(serverSocket.accept()).start();
-            }
+        executorService = Executors.newCachedThreadPool();
+
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            acceptConnections(serverSocket);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            stop();
         }
     }
 
-    public void stop() {
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void acceptConnections(ServerSocket serverSocket) {
+        while (true) {
+            try {
+                executorService.submit(new ClientHandler(serverSocket.accept()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

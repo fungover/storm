@@ -1,35 +1,45 @@
 package org.fungover.storm.server;
 
-import org.fungover.storm.client.Client;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.concurrent.Executors;
+
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 class ServerTest {
+    private static int port;
 
-    @Test
-    @DisplayName("Connect one client to server messages should be the same")
-    void connectOneClientToServerMessagesShouldBeTheSame() {
-        Server server = new Server(8080);
-        server.start();
+    @BeforeAll
+    public static void start() {
+        ServerSocket s;
 
-        Client client1 = new Client();
-        client1.startConnection("localhost", 8080);
+        try {
+            s = new ServerSocket(0);
+            port = s.getLocalPort();
+            s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        String message1 = client1.sendMessage("Hello");
-        String message2 = client1.sendMessage("World");
-        String terminate = client1.sendMessage("exit");
+        Executors.newSingleThreadExecutor().submit(() -> new Server(port).start());
 
-        assertThat(message1).isEqualTo("Hello");
-        assertThat(message2).isEqualTo("World");
-        assertThat(terminate).isEqualTo("Disconnecting from server...");
-        client1.stopConnection();
-        server.stop();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
+    @Test
+    @DisplayName("Connect one client, should not throw exception")
+    void connectOneClientShouldNotThrowException() {
+        Client client = new Client();
 
+        assertThatNoException().isThrownBy(() -> client.startConnection("localhost", port));
+        client.stopConnection();
+    }
 }
