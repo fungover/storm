@@ -8,12 +8,12 @@ updates:
 
   # Maintain dependencies for Maven
   - package-ecosystem: "maven"
-    directory: "/"
+    directory: "/.github/workflows/"
     schedule:
       interval: "daily"
 
     # Maintain dependencies for Docker
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/.github/workflows/"
     schedule:
       interval: "daily"
