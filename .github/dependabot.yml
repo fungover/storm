@@ -8,7 +8,7 @@ updates:
 
   # Maintain dependencies for Maven
   - package-ecosystem: "maven"
-    directory: "/.github/workflows/"
+    directory: "/"
     schedule:
       interval: "daily"
 
