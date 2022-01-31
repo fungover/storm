@@ -2,6 +2,7 @@ package org.fungover.storm.fileHandler;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -59,7 +60,16 @@ class FormatConverterTest {
             var result = FormatConverter.MIME("test.1.0.pdf");
             assertThat(result).isEqualTo("application/pdf");
         }
+        @Test
+        void convertingFileWithUnknownExtensionShouldReturnDefaultMIMEType() {
+            var result = FormatConverter.MIME("fil.test");
+            assertThat(result).isEqualTo("application/octet-stream");
+        }
+
+
+
     }
+
     @Nested
     class FromPath {
 
