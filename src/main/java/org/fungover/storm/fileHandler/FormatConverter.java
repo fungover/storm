@@ -10,7 +10,8 @@ public class FormatConverter {
             "html", "text",
             "csv", "text",
             "css", "text",
-            "zip", "application"
+            "zip", "application",
+            "pdf", "application"
     );
 
 

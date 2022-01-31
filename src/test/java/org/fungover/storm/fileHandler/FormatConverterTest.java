@@ -41,4 +41,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("test.zip");
         assertThat(result).isEqualTo("application/zip");
     }
+
+    @Test
+    void convertingPdfFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("test.pdf");
+        assertThat(result).isEqualTo("application/pdf");
+    }
 }
