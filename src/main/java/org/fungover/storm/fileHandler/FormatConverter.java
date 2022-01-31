@@ -1,5 +1,6 @@
 package org.fungover.storm.fileHandler;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,5 +22,10 @@ public class FormatConverter {
         String subtype = result[result.length - 1];
         String type = subtypeToType.get(subtype);
         return type + "/" + subtype;
+    }
+
+    public static String MIME(Path filePath) {
+        String path = filePath.toString();
+        return MIME(path);
     }
 }
