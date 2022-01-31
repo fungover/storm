@@ -1,15 +1,12 @@
 package org.fungover.storm.fileHandler;
 
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class FormatConverterTest {
 
