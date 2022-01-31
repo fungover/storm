@@ -47,4 +47,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("test.pdf");
         assertThat(result).isEqualTo("application/pdf");
     }
+
+    @Test
+    void convertingFileWithComplicatedNameUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("test.1.0.pdf");
+        assertThat(result).isEqualTo("application/pdf");
+    }
 }
