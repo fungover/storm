@@ -1,2 +1,2 @@
-module storm {
+module org.fungover.storm {
 }
