@@ -1,5 +1,7 @@
 package org.fungover.storm.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fungover.storm.client.ClientHandler;
 
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    private static final Logger LOGGER = LogManager.getLogger("SERVER");
     private final int port;
     private ExecutorService executorService;
 
@@ -36,6 +39,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        LOGGER.info("Starting server...");
         Server server = new Server(8080);
         server.start();
     }
