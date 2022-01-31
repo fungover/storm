@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public class FormatConverter {
+
+    private FormatConverter(){}
+
     private static Map<String, String> subtypeToType = Map.of(
             "jpeg", "image",
             "png", "image",
