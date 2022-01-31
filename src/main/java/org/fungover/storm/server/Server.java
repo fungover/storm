@@ -6,6 +6,7 @@ import org.fungover.storm.client.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,7 +41,22 @@ public class Server {
 
     public static void main(String[] args) {
         LOGGER.info("Starting server...");
-        Server server = new Server(8080);
+        Map<String, String> env = System.getenv();
+        Server server = new Server(getPort(env));
+        LOGGER.info("Started server on port: " + server.port);
         server.start();
+    }
+
+    private static int getPort(Map<String, String> env) {
+        int port = 8080;
+        if (env.containsKey("SERVER_PORT")) {
+            try {
+                String portEnv = env.get("SERVER_PORT");
+                port = Integer.parseInt(portEnv);
+            } catch (NumberFormatException e) {
+                LOGGER.error("Invalid port! " + e.getMessage());
+            }
+        }
+        return port;
     }
 }
