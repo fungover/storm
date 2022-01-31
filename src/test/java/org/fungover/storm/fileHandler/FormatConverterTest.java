@@ -72,6 +72,15 @@ class FormatConverterTest {
             assertThat(result).isEqualTo("application/pdf");
         }
 
+        @Test
+        void convertingHtmlFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+            Path path = Paths.get("test.html");
+
+            var result = FormatConverter.MIME(path);
+
+            assertThat(result).isEqualTo("text/html");
+        }
+
     }
 
 }
