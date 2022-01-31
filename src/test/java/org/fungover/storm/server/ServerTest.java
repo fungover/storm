@@ -28,7 +28,7 @@ class ServerTest {
         Executors.newSingleThreadExecutor().submit(() -> new Server(port).start());
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
