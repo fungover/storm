@@ -11,4 +11,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("cat.png");
         assertThat(result).isEqualTo("image/png");
     }
+
+    @Test
+    void convertingJpegFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("cat.jpeg");
+        assertThat(result).isEqualTo("image/jpeg");
+    }
 }
