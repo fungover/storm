@@ -29,4 +29,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("test.csv");
         assertThat(result).isEqualTo("text/csv");
     }
+
+    @Test
+    void convertingCssFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("test.css");
+        assertThat(result).isEqualTo("text/css");
+    }
 }
