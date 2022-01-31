@@ -17,7 +17,6 @@ public class FormatConverter {
             "pdf", "application"
     );
 
-
     public static String MIME(String file) {
         String[] result = file.split("\\.");
         String subtype = result[result.length - 1];
