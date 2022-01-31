@@ -35,4 +35,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("test.css");
         assertThat(result).isEqualTo("text/css");
     }
+
+    @Test
+    void convertingZipFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("test.zip");
+        assertThat(result).isEqualTo("application/zip");
+    }
 }
