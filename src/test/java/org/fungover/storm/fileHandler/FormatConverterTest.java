@@ -17,4 +17,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("cat.jpeg");
         assertThat(result).isEqualTo("image/jpeg");
     }
+
+    @Test
+    void convertingHtmlFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("test.html");
+        assertThat(result).isEqualTo("text/html");
+    }
 }
