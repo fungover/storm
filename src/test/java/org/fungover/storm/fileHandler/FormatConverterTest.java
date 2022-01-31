@@ -23,4 +23,10 @@ class FormatConverterTest {
         var result = FormatConverter.MIME("test.html");
         assertThat(result).isEqualTo("text/html");
     }
+
+    @Test
+    void convertingCsvFileUsingMIMEShouldReturnCorrespondingMIMEType() {
+        var result = FormatConverter.MIME("test.csv");
+        assertThat(result).isEqualTo("text/csv");
+    }
 }

@@ -9,7 +9,7 @@ public class FormatConverter {
 
         if (subtype.equals("jpeg") || subtype.equals("png"))
             type = "image";
-        else if (subtype.equals("html"))
+        else if (subtype.equals("html") || subtype.equals("csv"))
             type = "text";
         else
             type = null;
