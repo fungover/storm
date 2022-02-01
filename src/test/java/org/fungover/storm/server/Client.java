@@ -16,8 +16,6 @@ public class Client {
             clientSocket = new Socket(ip, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-            out.println("Hello World");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,5 +29,18 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //todo: sendMessage should return void
+    public String sendMessage(String text) {
+        out.println(text);
+
+        String response = "";
+        try {
+             response = in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }

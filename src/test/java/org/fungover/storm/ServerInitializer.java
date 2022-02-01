@@ -17,7 +17,6 @@ public class ServerInitializer {
             s = new ServerSocket(0);
             port = s.getLocalPort();
             s.close();
-            System.out.println(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
