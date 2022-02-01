@@ -5,35 +5,39 @@ import java.util.*;
 public class HttpParser {
 
     private static final List<String> methods = List.of("GET", "POST", "PUT");
-    private static final Map<String, String> requestHeaders = new HashMap<>();
+
 
     public static Map<String, String> getRequestHeaders(String headers) {
-        requestHeaders.clear();
         List<String> lines = headers.lines().toList();
-
         String[] firstLine = lines.get(0).split(" ");
 
         if (!validRequest(firstLine))
             return Map.of();
-        parseFirstLine(firstLine);
-        lines.stream().skip(1).forEach(HttpParser::parseHeader);
+
+        Map<String, String> requestHeaders = new HashMap<>(parseFirstLine(firstLine));
+
+        lines.stream().skip(1)
+                .map(HttpParser::parseHeader)
+                .forEach(header -> requestHeaders.put(header[0], header[1]));
 
         return requestHeaders;
     }
 
-    private static void parseFirstLine(String[] properties) {
-        requestHeaders.put("method", properties[0]);
-        requestHeaders.put("path", properties[1]);
-        requestHeaders.put("HTTP-version", properties[2]);
+    private static Map<String, String> parseFirstLine(String[] properties) {
+        return Map.of(
+                "method", properties[0],
+                "path", properties[1],
+                "HTTP-version", properties[2]
+        );
     }
 
     private static boolean validRequest(String[] properties) {
         return properties.length == 3 && methods.contains(properties[0]);
     }
 
-    private static void parseHeader(String header) {
+    private static String[] parseHeader(String header) {
         String[] properties = header.split(":");
-        requestHeaders.put(properties[0].trim(), properties[1].trim());
+        return new String[]{ properties[0].trim(), properties[1].trim() };
     }
 
 }
