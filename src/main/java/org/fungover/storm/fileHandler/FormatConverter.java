@@ -9,7 +9,7 @@ public class FormatConverter {
     private FormatConverter() {
     }
 
-    private static Map<String, String> subtypeToType = Map.of(
+    private static final Map<String, String> subtypeToType = Map.of(
             "jpeg", "image",
             "png", "image",
             "html", "text",
@@ -23,7 +23,7 @@ public class FormatConverter {
         String[] result = file.split("\\.");
         String subtype = result[result.length - 1];
         Optional<String> type = Optional.ofNullable(subtypeToType.get(subtype));
-        if (type.isEmpty()){
+        if (type.isEmpty()) {
             type = Optional.of("application");
             subtype = "octet-stream";
         }
