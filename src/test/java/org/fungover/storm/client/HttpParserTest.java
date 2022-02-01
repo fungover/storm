@@ -11,7 +11,6 @@ class HttpParserTest {
 
     @Test
     void shouldReturnParsedRequestHeaders() {
-        HttpParser httpParser = new HttpParser();
         String requestHeaders = """
                 GET /home.html HTTP/1.1
                 Host: developer.mozilla.org
@@ -20,7 +19,7 @@ class HttpParserTest {
                 Connection: keep-alive
                 """;
 
-        Map<String, String> result = httpParser.getRequestHeaders(requestHeaders);
+        Map<String, String> result = HttpParser.getRequestHeaders(requestHeaders);
         Map<String, String> expected = Map.of(
                 "method", "GET",
                 "path", "/home.html",
