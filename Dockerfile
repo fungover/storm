@@ -6,5 +6,4 @@ FROM eclipse-temurin:17-jre-alpine
 COPY --from=build /src/target/modules /app/modules
 COPY --from=build /src/target/storm.jar /app/storm.jar
 RUN mkdir /webroot
-VOLUME /webroot
 ENTRYPOINT ["java","--module-path","app/storm.jar:app/modules","-m","org.fungover.storm/org.fungover.storm.server.Server"]
