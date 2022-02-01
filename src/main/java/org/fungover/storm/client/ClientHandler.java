@@ -36,7 +36,7 @@ public class ClientHandler implements Runnable {
 
         while (true) {
             input = in.readLine();
-            if(input.isEmpty())
+            if (input.isEmpty())
                 break;
             out.println(input);
         }
