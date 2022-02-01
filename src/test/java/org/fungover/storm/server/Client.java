@@ -31,16 +31,4 @@ public class Client {
         }
     }
 
-    //todo: sendMessage should return void
-    public String sendMessage(String text) {
-        out.println(text);
-
-        String response = "";
-        try {
-             response = in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return response;
-    }
 }
