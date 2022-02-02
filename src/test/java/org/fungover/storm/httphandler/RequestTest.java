@@ -37,6 +37,18 @@ public class RequestTest {
         assertThat(result).isTrue();
     }
 
+    @Test
+    void clearParametersShouldSetIsEmptyToTrue() {
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "2");
+        request.setParameters(map);
+        request.clearParameters();
+        var result = map.isEmpty();
+        assertThat(result).isTrue();
+    }
+
+
+
 
 
 
