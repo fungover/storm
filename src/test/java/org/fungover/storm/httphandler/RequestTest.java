@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 
 public class RequestTest {
     Request request = new Request();
@@ -29,27 +30,19 @@ public class RequestTest {
 
     @Test
     void clearHeadersShouldSetIsEmptyToTrue() {
-        Map<String, String> map = new HashMap<>();
-        map.put("1", "2");
-        request.setHeaders(map);
+        request.putHeaders("1", "2");
         request.clearHeaders();
-        var result = map.isEmpty();
-        assertThat(result).isTrue();
+        var result = request.getParameters();
+        assertThat(result).isEmpty();
     }
 
     @Test
     void clearParametersShouldSetIsEmptyToTrue() {
-        Map<String, String> map = new HashMap<>();
-        map.put("1", "2");
-        request.setParameters(map);
+        request.putParameters("1", "2");
         request.clearParameters();
-        var result = map.isEmpty();
-        assertThat(result).isTrue();
+        var result = request.getHeaders();
+        assertThat(result).isEmpty();
     }
-
-
-
-
 
 
 }
