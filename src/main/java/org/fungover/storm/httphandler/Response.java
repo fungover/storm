@@ -7,6 +7,15 @@ public class Response {
     private int statusCode;
     private byte[] body;
 
+    public Response() {
+        this.reset();
+    }
+
+    public void reset() {
+        this.statusCode = 0;
+        this.body = null;
+        this.headers = null;
+    }
 
     public Response(Map<String, String> headers, int statusCode, byte[] body) {
         this.headers = headers;
