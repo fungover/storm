@@ -14,10 +14,10 @@ public class HttpParser {
         List<String> lines = headers.lines().toList();
         String[] firstLine = lines.get(0).split(" ");
 
-        if (!validRequest(firstLine))
-            return Map.of();
-        else
+        if (validRequest(firstLine))
             return requestHeaders(lines, firstLine);
+        else
+            return Map.of();
     }
 
     private static Map<String, String> requestHeaders(List<String> lines, String[] firstLine) {
