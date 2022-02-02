@@ -21,7 +21,8 @@ public class ClientHandler implements Runnable {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            handleInputAndOutput();
+            String input = in.readLine();
+            out.println(input);
 
             in.close();
             out.close();
@@ -30,15 +31,4 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
     }
-
-    private void handleInputAndOutput() throws IOException {
-        String input;
-        while (true) {
-            input = in.readLine();
-            if (input.isEmpty())
-                break;
-            out.println(input);
-        }
-    }
-
 }
