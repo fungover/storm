@@ -5,4 +5,8 @@
 
 ![issues](https://img.shields.io/github/issues/fungover/storm)
 
+![Coverage](.github/badges/jacoco.svg)
+
+![Branches](.github/badges/branches.svg)
+
 A simple webserver implementation
