@@ -1,5 +1,7 @@
 package org.fungover.storm.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 class ServerTest {
+    private static final Logger LOGGER = LogManager.getLogger("SERVER");
     private static int port;
 
     @BeforeAll
@@ -22,7 +25,7 @@ class ServerTest {
             port = s.getLocalPort();
             s.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         Executors.newSingleThreadExecutor().submit(() -> new Server(port).start());
@@ -30,7 +33,7 @@ class ServerTest {
         try {
             Thread.sleep(2500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
