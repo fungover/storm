@@ -5,6 +5,7 @@ import java.util.*;
 public class HttpParser {
 
     private static final List<String> methods = List.of("GET", "POST", "PUT");
+    private static final int REQUEST_LINE_PROPERTIES = 3;
 
     private HttpParser() {
     }
@@ -15,12 +16,13 @@ public class HttpParser {
 
         if (!validRequest(firstLine))
             return Map.of();
+        else
+            return requestHeaders(lines, firstLine);
+    }
 
+    private static Map<String, String> requestHeaders(List<String> lines, String[] firstLine) {
         Map<String, String> requestHeaders = new HashMap<>(parseFirstLine(firstLine));
-        lines.stream().skip(1)
-                .map(HttpParser::parseHeader)
-                .forEach(header -> requestHeaders.put(header[0], header[1]));
-
+        lines.stream().skip(1).map(HttpParser::parseHeader).forEach(header -> requestHeaders.put(header[0], header[1]));
         return requestHeaders;
     }
 
@@ -33,7 +35,7 @@ public class HttpParser {
     }
 
     private static boolean validRequest(String[] properties) {
-        return properties.length == 3 && methods.contains(properties[0]);
+        return properties.length == REQUEST_LINE_PROPERTIES && methods.contains(properties[0]);
     }
 
     private static String[] parseHeader(String header) {
