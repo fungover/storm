@@ -13,4 +13,13 @@ public class ResponseTest {
         var result = response.getStatusCode();
         assertThat(result).isEqualTo(404);
     }
+    @Test
+    void setBodyShouldBeEqualToGetBody(){
+        response.setBody(new byte[10]);
+        var result = response.getBody().length;
+        assertThat(result).isEqualTo(10);
+    }
+
+
+
 }
