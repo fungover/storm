@@ -25,12 +25,13 @@ jobs:
     - name: Build with Maven
       run: mvn -B test --file pom.xml
     - name: Generate JaCoCo Badge
-      if: ${{ github.event_name == 'push' }}
       id: jacoco
       uses: cicirello/jacoco-badge-generator@v2
       with:
           generate-branches-badge: true
-    - name: Log coverage percentage
+          fail-if-coverage-less-than: 50
+          fail-on-coverage-decrease: true
+    - name: Log coverage percentage(if it changed)
       if: ${{ github.event_name == 'push' }}
       run: |
           echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
