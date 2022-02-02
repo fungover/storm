@@ -14,4 +14,13 @@ public class RequestTest {
         assertThat(result).isTrue();
     }
 
+
+    @Test
+    void clearingBodyShouldReturnZero(){
+        request.setBody(new byte[10]);
+        request.clearBody();
+        var result = request.getBody().length;
+        assertThat(result).isEqualTo(0);
+    }
+
 }
