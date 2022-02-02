@@ -6,6 +6,9 @@ public class HttpParser {
 
     private static final List<String> methods = List.of("GET", "POST", "PUT");
 
+    private HttpParser() {
+    }
+
     public static Map<String, String> getRequestHeaders(String headers) {
         List<String> lines = headers.lines().toList();
         String[] firstLine = lines.get(0).split(" ");
