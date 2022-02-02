@@ -30,7 +30,7 @@ public class Server {
     }
 
     public void acceptConnections(ServerSocket serverSocket) {
-        while (true) {
+        while (!serverSocket.isClosed()) {
             try {
                 executorService.submit(new ClientHandler(serverSocket.accept()));
             } catch (IOException e) {
