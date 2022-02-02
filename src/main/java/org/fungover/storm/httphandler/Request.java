@@ -9,6 +9,13 @@ public class Request {
     private Map<String,String> parameters = new HashMap<>();
     private Map<String,String> headers = new HashMap<>();
 
+    public void reset(){
+        this.clearBody();
+        this.clearHeaders();
+        this.clearParameters();
+        this.clearUrl();
+    }
+
     public byte[] getBody() {
         return body;
     }
@@ -40,4 +47,21 @@ public class Request {
     public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
+
+    public void clearBody(){
+        this.body = new byte[0];
+    }
+
+    public void clearUrl(){
+        this.url = "";
+    }
+
+    public void clearParameters(){
+        this.parameters.clear();
+    }
+
+    public void clearHeaders(){
+        this.headers.clear();
+    }
+
 }
