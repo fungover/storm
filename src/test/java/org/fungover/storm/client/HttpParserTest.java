@@ -8,7 +8,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class HttpParserTest {
 
-
     @Test
     void shouldReturnParsedRequestHeaders() {
         String requestHeaders = """

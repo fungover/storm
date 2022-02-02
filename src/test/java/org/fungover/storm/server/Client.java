@@ -16,6 +16,8 @@ public class Client {
             clientSocket = new Socket(ip, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            out.println("Hello World");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,5 +32,4 @@ public class Client {
             e.printStackTrace();
         }
     }
-
 }

@@ -6,7 +6,6 @@ public class HttpParser {
 
     private static final List<String> methods = List.of("GET", "POST", "PUT");
 
-
     public static Map<String, String> getRequestHeaders(String headers) {
         List<String> lines = headers.lines().toList();
         String[] firstLine = lines.get(0).split(" ");
@@ -15,7 +14,6 @@ public class HttpParser {
             return Map.of();
 
         Map<String, String> requestHeaders = new HashMap<>(parseFirstLine(firstLine));
-
         lines.stream().skip(1)
                 .map(HttpParser::parseHeader)
                 .forEach(header -> requestHeaders.put(header[0], header[1]));
@@ -37,7 +35,7 @@ public class HttpParser {
 
     private static String[] parseHeader(String header) {
         String[] properties = header.split(":");
-        return new String[]{ properties[0].trim(), properties[1].trim() };
+        return new String[]{properties[0].trim(), properties[1].trim()};
     }
 
 }

@@ -33,7 +33,6 @@ public class ClientHandler implements Runnable {
 
     private void handleInputAndOutput() throws IOException {
         String input;
-
         while (true) {
             input = in.readLine();
             if (input.isEmpty())
@@ -41,6 +40,5 @@ public class ClientHandler implements Runnable {
             out.println(input);
         }
     }
-
 
 }
