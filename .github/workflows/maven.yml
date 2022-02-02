@@ -29,8 +29,10 @@ jobs:
       uses: cicirello/jacoco-badge-generator@v2
       with:
           generate-branches-badge: true
+          generate-summary: true
           fail-if-coverage-less-than: 50
           fail-on-coverage-decrease: true
+
     - name: Log coverage percentage(if it changed)
       if: ${{ github.event_name == 'push' }}
       run: |
