@@ -9,6 +9,13 @@ public class Request {
     private Map<String,String> parameters = new HashMap<>();
     private Map<String,String> headers = new HashMap<>();
 
+    public Request() {
+        this.headers = new HashMap<String, String>();
+        this.parameters = new HashMap<String, String>();
+        this.reset();
+    }
+
+
     public void reset(){
         this.clearBody();
         this.clearHeaders();
