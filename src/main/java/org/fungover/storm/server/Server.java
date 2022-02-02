@@ -25,7 +25,7 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             acceptConnections(serverSocket);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -34,7 +34,7 @@ public class Server {
             try {
                 executorService.submit(new ClientHandler(serverSocket.accept()));
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }
     }
