@@ -2,6 +2,9 @@ package org.fungover.storm.httphandler;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class ResponseTest {
@@ -13,12 +16,24 @@ public class ResponseTest {
         var result = response.getStatusCode();
         assertThat(result).isEqualTo(404);
     }
+
     @Test
     void setBodyShouldBeEqualToGetBody(){
         response.setBody(new byte[10]);
         var result = response.getBody().length;
         assertThat(result).isEqualTo(10);
     }
+
+    @Test
+    void resettingResponseShouldSetHeadersToNull(){
+        Map<String,String> map = new HashMap<>();
+        map.put("1","3");
+        response.setHeaders(map);
+        response.reset();
+        var result = response.getHeaders();
+        assertThat(result).isNull();
+    }
+
 
 
 
