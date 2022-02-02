@@ -11,6 +11,7 @@ public class Client {
     private PrintWriter out;
     private BufferedReader in;
 
+
     public void startConnection(String ip, int port) {
         try {
             clientSocket = new Socket(ip, port);
