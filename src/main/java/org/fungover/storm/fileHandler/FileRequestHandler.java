@@ -10,13 +10,12 @@ import java.util.Map;
 
 public class FileRequestHandler {
     private static Path path;
-    private static String headers;
-    private static String response;
     private static byte[] file;
     private static long filesize;
 
+    private FileRequestHandler(){}
+
     public static void handleRequest(String request) throws IOException {
-        headers += request;
         var map = HttpParser.getRequestHeaders(request);
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
@@ -27,7 +26,7 @@ public class FileRequestHandler {
 
 
     public static byte[][] writeResponse() {
-        response = "HTTP/1.1 200 OK \r\nContent-length:" + filesize +
+        String response = "HTTP/1.1 200 OK \r\nContent-length:" + filesize +
                 "Content-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
         return new byte[][]{response.getBytes(), file};
