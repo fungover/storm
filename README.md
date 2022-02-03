@@ -7,5 +7,8 @@
 
 [![Qodana](https://github.com/fungover/storm/actions/workflows/code_quality.yml/badge.svg)](https://github.com/fungover/storm/actions/workflows/code_quality.yml)
 
+![Coverage](.github/badges/jacoco.svg)
+
+![Branches](.github/badges/branches.svg)
 
 A simple webserver implementation
