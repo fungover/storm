@@ -3,6 +3,8 @@ package org.fungover.storm.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fungover.storm.client.ClientHandler;
+import org.fungover.storm.config.Configuration;
+import org.fungover.storm.config.ConfigurationManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -39,8 +41,11 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        ConfigurationManager.getInstance().readConfigurationFile("src/main/resources/config.json");
+        Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
+
         LOGGER.info("Starting server...");
-        Server server = new Server(8080);
+        Server server = new Server(conf.getPort());
         server.start();
     }
 }
