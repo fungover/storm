@@ -2,17 +2,20 @@ package org.fungover.storm.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fungover.storm.fileHandler.FileRequestHandler;
+import org.fungover.storm.fileHandler.FormatConverter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Map;
 
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("SERVER");
     private final Socket clientSocket;
-    private PrintWriter out;
+    private OutputStream out;
     private BufferedReader in;
 
     public ClientHandler(Socket socket) {
@@ -22,11 +25,17 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String input = in.readLine();
-            out.println(input);
+
+            FileRequestHandler.handleRequest(input);
+            byte[] header = FileRequestHandler.writeResponse()[0];
+            byte[] file = FileRequestHandler.writeResponse()[1];
+
+            out.write(header);
+            out.write(file);
 
             in.close();
             out.close();
