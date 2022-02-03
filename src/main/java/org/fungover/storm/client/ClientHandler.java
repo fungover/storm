@@ -14,6 +14,7 @@ public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private HTTPResponse response;
 
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -32,7 +33,11 @@ public class ClientHandler implements Runnable {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+            response = new HTTPResponse();
+            if (e.getMessage().equals("500"))
+                LOGGER.error(response.getError500());
+            else
+                LOGGER.error(e.getMessage());
         }
     }
 }
