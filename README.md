@@ -5,4 +5,7 @@
 
 ![issues](https://img.shields.io/github/issues/fungover/storm)
 
+[![Qodana](https://github.com/fungover/storm/actions/workflows/code_quality.yml/badge.svg)](https://github.com/fungover/storm/actions/workflows/code_quality.yml)
+
+
 A simple webserver implementation

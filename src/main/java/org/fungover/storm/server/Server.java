@@ -25,16 +25,16 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             acceptConnections(serverSocket);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
     public void acceptConnections(ServerSocket serverSocket) {
-        while (true) {
+        while (!serverSocket.isClosed()) {
             try {
                 executorService.submit(new ClientHandler(serverSocket.accept()));
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }
     }
@@ -43,7 +43,7 @@ public class Server {
         LOGGER.info("Starting server...");
         Map<String, String> env = System.getenv();
         Server server = new Server(getPort(env));
-        LOGGER.info("Started server on port: " + server.port);
+        LOGGER.info("Started server on port: {}", server.port);
         server.start();
     }
 
@@ -54,7 +54,7 @@ public class Server {
                 String portEnv = env.get("SERVER_PORT");
                 port = Integer.parseInt(portEnv);
             } catch (NumberFormatException e) {
-                LOGGER.error("Invalid port! " + e.getMessage());
+                LOGGER.error("Invalid port! {}", e.getMessage());
             }
         }
         return port;
