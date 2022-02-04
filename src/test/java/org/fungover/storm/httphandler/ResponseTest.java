@@ -34,7 +34,11 @@ public class ResponseTest {
         assertThat(result).isNull();
     }
 
-
-
+    @Test
+    void setStatusCodeInOtherConstructorShouldBeEqualTo404(){
+        Map<String,String> map = new HashMap<>();
+        Response response1 = new Response(map,404,new byte[100]);
+        assertThat(response1.getStatusCode()).isEqualTo(404);
+    }
 
 }
