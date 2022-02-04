@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable {
             clientSocket.close();
         } catch (IOException e) {
             statusCode = new HttpResponseStatusCodes();
-            if (e.getMessage().equals("500"))
+            if (e.getMessage().contains("500"))
                 LOGGER.error(statusCode.getError500());
             else
                 LOGGER.error(e.getMessage());
