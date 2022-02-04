@@ -10,7 +10,7 @@ public class Request {
     private final Map<String, String> headers;
 
     public Request() {
-        this.headers = new HashMap<String, String>();
+        this.headers = new HashMap<>();
         this.parameters = new HashMap<String, String>();
         this.reset();
     }
