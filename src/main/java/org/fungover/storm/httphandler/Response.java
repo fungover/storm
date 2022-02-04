@@ -1,5 +1,6 @@
 package org.fungover.storm.httphandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Response {
@@ -9,11 +10,12 @@ public class Response {
 
     public Response() {
         this.reset();
+        this.headers = new HashMap<>();
     }
 
     public void reset() {
         this.statusCode = 0;
-        this.body = null;
+        this.body = new byte[0];
         this.headers = null;
     }
 
