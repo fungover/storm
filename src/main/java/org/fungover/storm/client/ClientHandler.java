@@ -3,6 +3,7 @@ package org.fungover.storm.client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fungover.storm.fileHandler.re.FileRequestHandler;
+import org.fungover.storm.fileHandler.re.FileInfo;
 
 import java.io.*;
 import java.net.Socket;
@@ -25,9 +26,9 @@ public class ClientHandler implements Runnable {
 
             String input = in.readLine();
 
-            FileRequestHandler.handleRequest(input);
-            byte[] header = FileRequestHandler.writeResponse()[0];
-            byte[] file = FileRequestHandler.writeResponse()[1];
+            FileInfo fileInfo = FileRequestHandler.handleRequest(input);
+            byte[] header = FileRequestHandler.writeResponse(fileInfo)[0];
+            byte[] file = FileRequestHandler.writeResponse(fileInfo)[1];
 
             out.write(header);
             out.write(file);

@@ -2,11 +2,11 @@ package org.fungover.storm.fileHandler.re;
 
 import org.fungover.storm.client.HttpParser;
 import org.fungover.storm.fileHandler.FormatConverter;
-import org.fungover.storm.fileHandler.re.FilePath;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 public class FileRequestHandler {
@@ -14,26 +14,24 @@ public class FileRequestHandler {
     private FileRequestHandler() {
     }
 
-    public static void handleRequest(String request) throws IOException {
-        var path = FilePath.getInstance();
+    public static FileInfo handleRequest(String request) throws IOException {
         var map = HttpParser.getRequestHeaders(request);
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
-        path.setPath(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
-        FileResource.getInstance().loadFile(path.retreive());
+        var path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
+        byte[] file = Files.readAllBytes(path);
+        return new FileInfo(path, file);
     }
 
-
-    public static byte[][] writeResponse() {
-        String response = "HTTP/1.1 200 OK \r\nContent-length:" + FileResource.getInstance().retreiveBytes().length +
-                "Content-type:" + FormatConverter.MIME(FilePath.getInstance().retreive()) +
+    public static byte[][] writeResponse(FileInfo fileInfo) {
+        long fileLength = fileInfo.getFile().length;
+        Path path = fileInfo.getPath();
+        String response = "HTTP/1.1 200 OK \r\nContent-length:" + fileLength +
+                "Content-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
-        return new byte[][]{response.getBytes(), FileResource.getInstance().retreiveBytes()};
+        return new byte[][]{response.getBytes(), fileInfo.getFile()};
     }
 
-    public static Path getPath() {
-        return FilePath.getInstance().retreive();
-    }
 
     private static String getAbsolutePathToResourceFromContext(Map<String, String> map, String context) {
         String absolutePath = System.getProperty("user.dir");

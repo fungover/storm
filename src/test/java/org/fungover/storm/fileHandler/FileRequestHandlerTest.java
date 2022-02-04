@@ -1,5 +1,6 @@
 package org.fungover.storm.fileHandler;
 
+import org.fungover.storm.fileHandler.re.FileInfo;
 import org.fungover.storm.fileHandler.re.FileRequestHandler;
 import org.junit.jupiter.api.Test;
 
@@ -20,9 +21,9 @@ public class FileRequestHandlerTest {
                 Accept-Language: en-US,en;q=0.5
                 Connection: keep-alive
                 """;
-        FileRequestHandler.handleRequest(req);
-        byte[][] result = FileRequestHandler.writeResponse();
-        Path path = FileRequestHandler.getPath();
+        FileInfo info = FileRequestHandler.handleRequest(req);
+        byte[][] result = FileRequestHandler.writeResponse(info);
+        Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + file.length +
                 "Content-type:" + FormatConverter.MIME(path) +
@@ -42,9 +43,9 @@ public class FileRequestHandlerTest {
                 Accept-Language: en-US,en;q=0.5
                 Connection: keep-alive
                 """;
-        FileRequestHandler.handleRequest(req);
-        byte[][] result = FileRequestHandler.writeResponse();
-        Path path = FileRequestHandler.getPath();
+        FileInfo info = FileRequestHandler.handleRequest(req);
+        byte[][] result = FileRequestHandler.writeResponse(info);
+        Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + file.length +
                 "Content-type:" + FormatConverter.MIME(path) +
