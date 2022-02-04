@@ -26,7 +26,7 @@ public class FileRequestHandlerTest {
         Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + file.length +
-                "Content-type:" + FormatConverter.MIME(path) +
+                "\r\nContent-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
         byte[][] expected = new byte[][]{response.getBytes(), file};
 
@@ -48,7 +48,7 @@ public class FileRequestHandlerTest {
         Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + file.length +
-                "Content-type:" + FormatConverter.MIME(path) +
+                "\r\nContent-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
         byte[][] expected = new byte[][]{response.getBytes(), file};
 

@@ -27,7 +27,7 @@ public class FileRequestHandler {
         long fileLength = fileInfo.getFile().length;
         Path path = fileInfo.getPath();
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + fileLength +
-                "Content-type:" + FormatConverter.MIME(path) +
+                "\r\nContent-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
         return new byte[][]{response.getBytes(), fileInfo.getFile()};
     }
