@@ -1,39 +1,41 @@
-package org.fungover.storm.fileHandler;
+package org.fungover.storm.fileHandler.re;
 
 import org.fungover.storm.client.HttpParser;
+import org.fungover.storm.fileHandler.FormatConverter;
+import org.fungover.storm.fileHandler.re.FilePath;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 
 public class FileRequestHandler {
-    private static Path path;
     private static byte[] file;
     private static long filesize;
 
-    private FileRequestHandler(){}
+    private FileRequestHandler() {
+    }
 
     public static void handleRequest(String request) throws IOException {
+        var path = FilePath.getInstance();
         var map = HttpParser.getRequestHeaders(request);
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
-        path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
-        file = Files.readAllBytes(path);
+        path.setPath(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
+        file = Files.readAllBytes(path.retreive());
         filesize = file.length;
     }
 
 
     public static byte[][] writeResponse() {
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + filesize +
-                "Content-type:" + FormatConverter.MIME(path) +
+                "Content-type:" + FormatConverter.MIME(FilePath.getInstance().retreive()) +
                 "\r\nConnection: Closed\r\n\r\n";
         return new byte[][]{response.getBytes(), file};
     }
 
-    public static Path getPath(){
-        return path;
+    public static Path getPath() {
+        return FilePath.getInstance().retreive();
     }
 
     private static String getAbsolutePathToResourceFromContext(Map<String, String> map, String context) {
@@ -48,4 +50,6 @@ public class FileRequestHandler {
 
         return absolutePath;
     }
+
 }
+

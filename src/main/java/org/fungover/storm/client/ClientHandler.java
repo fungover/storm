@@ -2,15 +2,10 @@ package org.fungover.storm.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fungover.storm.fileHandler.FileRequestHandler;
-import org.fungover.storm.fileHandler.FormatConverter;
+import org.fungover.storm.fileHandler.re.FileRequestHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Map;
 
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("SERVER");
