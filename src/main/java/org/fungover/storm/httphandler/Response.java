@@ -9,14 +9,14 @@ public class Response {
     private byte[] body;
 
     public Response() {
-        this.reset();
         this.headers = new HashMap<>();
+        this.reset();
     }
 
     public void reset() {
         this.statusCode = 0;
         this.body = new byte[0];
-        this.headers = null;
+        this.headers.clear();
     }
 
     public Response(Map<String, String> headers, int statusCode, byte[] body) {

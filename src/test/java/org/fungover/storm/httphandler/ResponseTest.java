@@ -31,7 +31,7 @@ public class ResponseTest {
         response.setHeaders(map);
         response.reset();
         var result = response.getHeaders();
-        assertThat(result).isNull();
+        assertThat(result).isEqualTo(Map.of());
     }
 
     @Test
