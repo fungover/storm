@@ -27,11 +27,10 @@ public class ClientHandler implements Runnable {
             String input = in.readLine();
 
             FileInfo fileInfo = FileRequestHandler.handleRequest(input);
-            byte[] header = FileRequestHandler.writeResponse(fileInfo)[0];
-            byte[] file = FileRequestHandler.writeResponse(fileInfo)[1];
+            byte[][] response = FileRequestHandler.writeResponse(fileInfo);
 
-            out.write(header);
-            out.write(file);
+            out.write(response[0]);
+            out.write(response[1]);
 
             in.close();
             out.close();
