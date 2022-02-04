@@ -10,8 +10,6 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public class FileRequestHandler {
-    private static byte[] file;
-    private static long filesize;
 
     private FileRequestHandler() {
     }
@@ -22,16 +20,15 @@ public class FileRequestHandler {
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
         path.setPath(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
-        file = Files.readAllBytes(path.retreive());
-        filesize = file.length;
+        FileResource.getInstance().loadFile(path.retreive());
     }
 
 
     public static byte[][] writeResponse() {
-        String response = "HTTP/1.1 200 OK \r\nContent-length:" + filesize +
+        String response = "HTTP/1.1 200 OK \r\nContent-length:" + FileResource.getInstance().retreiveBytes().length +
                 "Content-type:" + FormatConverter.MIME(FilePath.getInstance().retreive()) +
                 "\r\nConnection: Closed\r\n\r\n";
-        return new byte[][]{response.getBytes(), file};
+        return new byte[][]{response.getBytes(), FileResource.getInstance().retreiveBytes()};
     }
 
     public static Path getPath() {
