@@ -2,17 +2,16 @@ package org.fungover.storm.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fungover.storm.fileHandler.re.FileRequestHandler;
+import org.fungover.storm.fileHandler.re.FileInfo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("SERVER");
     private final Socket clientSocket;
-    private PrintWriter out;
+    private OutputStream out;
     private BufferedReader in;
     private HttpResponseStatusCodes statusCode;
 
@@ -23,11 +22,16 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String input = in.readLine();
-            out.println(input);
+
+            FileInfo fileInfo = FileRequestHandler.handleRequest(input);
+            byte[][] response = FileRequestHandler.writeResponse(fileInfo);
+
+            out.write(response[0]);
+            out.write(response[1]);
 
             in.close();
             out.close();
