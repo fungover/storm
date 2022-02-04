@@ -14,7 +14,7 @@ public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
-    private HTTPResponse response;
+    private HttpResponseStatusCodes statusCode;
 
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -33,9 +33,9 @@ public class ClientHandler implements Runnable {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            response = new HTTPResponse();
+            statusCode = new HttpResponseStatusCodes();
             if (e.getMessage().equals("500"))
-                LOGGER.error(response.getError500());
+                LOGGER.error(statusCode.getError500());
             else
                 LOGGER.error(e.getMessage());
         }
