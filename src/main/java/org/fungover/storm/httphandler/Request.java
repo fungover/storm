@@ -11,7 +11,7 @@ public class Request {
 
     public Request() {
         this.headers = new HashMap<>();
-        this.parameters = new HashMap<String, String>();
+        this.parameters = new HashMap<>();
         this.reset();
     }
 
