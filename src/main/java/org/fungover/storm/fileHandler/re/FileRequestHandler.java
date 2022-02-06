@@ -2,6 +2,7 @@ package org.fungover.storm.fileHandler.re;
 
 import org.fungover.storm.client.HttpParser;
 import org.fungover.storm.fileHandler.FormatConverter;
+import static org.fungover.storm.fileHandler.re.ResponseCode.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,22 +12,30 @@ import java.util.Map;
 
 public class FileRequestHandler {
 
-    private FileRequestHandler() {
+    String code;
+
+    public FileRequestHandler() {
+        code = OK.getCode();
     }
 
-    public static FileInfo handleRequest(String request) throws IOException {
+    public FileInfo handleRequest(String request) throws IOException {
         var map = HttpParser.getRequestHeaders(request);
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
         var path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
+        if (Files.notExists(path)){
+            code = NOT_FOUND.getCode();
+            map.put("path", "404filenotfound.html");
+            path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
+        }
         byte[] file = Files.readAllBytes(path);
         return new FileInfo(path, file);
     }
 
-    public static byte[][] writeResponse(FileInfo fileInfo) {
+    public byte[][] writeResponse(FileInfo fileInfo) {
         long fileLength = fileInfo.getFile().length;
         Path path = fileInfo.getPath();
-        String response = "HTTP/1.1 200 OK \r\nContent-length:" + fileLength +
+        String response = "HTTP/1.1 " + code + " \r\nContent-length:" + fileLength +
                 "\r\nContent-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
         return new byte[][]{response.getBytes(), fileInfo.getFile()};
@@ -45,6 +54,7 @@ public class FileRequestHandler {
 
         return absolutePath;
     }
+
 
 }
 

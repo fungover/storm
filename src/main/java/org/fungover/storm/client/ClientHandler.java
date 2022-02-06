@@ -21,13 +21,14 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
+            FileRequestHandler fileRequestHandler = new FileRequestHandler();
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String input = in.readLine();
 
-            FileInfo fileInfo = FileRequestHandler.handleRequest(input);
-            byte[][] response = FileRequestHandler.writeResponse(fileInfo);
+            FileInfo fileInfo = fileRequestHandler.handleRequest(input);
+            byte[][] response = fileRequestHandler.writeResponse(fileInfo);
 
             out.write(response[0]);
             out.write(response[1]);
