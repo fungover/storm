@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class FileRequestHandler {
 
-    String responseCode;
+    private String responseCode;
 
     public FileRequestHandler() {
         responseCode = OK.getCode();
