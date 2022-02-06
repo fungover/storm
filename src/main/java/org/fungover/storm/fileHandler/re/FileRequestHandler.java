@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class FileRequestHandler {
 
-    String code;
+    String responseCode;
 
     public FileRequestHandler() {
-        code = OK.getCode();
+        responseCode = OK.getCode();
     }
 
     public FileInfo handleRequest(String request) throws IOException {
@@ -23,11 +23,8 @@ public class FileRequestHandler {
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
         var path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
-        if (Files.notExists(path)){
-            code = NOT_FOUND.getCode();
-            map.put("path", "404filenotfound.html");
-            path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
-        }
+        if (Files.notExists(path))
+            path = updateToCode404AndPath(map);
         byte[] file = Files.readAllBytes(path);
         return new FileInfo(path, file);
     }
@@ -35,12 +32,19 @@ public class FileRequestHandler {
     public byte[][] writeResponse(FileInfo fileInfo) {
         long fileLength = fileInfo.getFile().length;
         Path path = fileInfo.getPath();
-        String response = "HTTP/1.1 " + code + " \r\nContent-length:" + fileLength +
+        String response = "HTTP/1.1 " + responseCode + " \r\nContent-length:" + fileLength +
                 "\r\nContent-type:" + FormatConverter.MIME(path) +
                 "\r\nConnection: Closed\r\n\r\n";
         return new byte[][]{response.getBytes(), fileInfo.getFile()};
     }
 
+    private Path updateToCode404AndPath(Map<String, String> map) {
+        Path path;
+        responseCode = NOT_FOUND.getCode();
+        map.put("path", "404filenotfound.html");
+        path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
+        return path;
+    }
 
     private static String getAbsolutePathToResourceFromContext(Map<String, String> map, String context) {
         String absolutePath = System.getProperty("user.dir");
