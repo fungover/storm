@@ -90,6 +90,15 @@ class FormatConverterTest {
             assertThat(result).allMatch(mimeType -> mimeType.equals("text/html"));
         }
 
+        @Test
+        void convertingTiffAndTifFileShouldReturnTheSameSameMIMEType() {
+            var result = new ArrayList<String>();
+
+            result.add(FormatConverter.MIME("test.tiff"));
+            result.add(FormatConverter.MIME("test.tif"));
+
+            assertThat(result).allMatch(mimeType -> mimeType.equals("image/tiff"));
+        }
     }
 
     @Nested
