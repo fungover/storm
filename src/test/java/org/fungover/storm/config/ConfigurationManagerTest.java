@@ -11,7 +11,7 @@ class ConfigurationManagerTest {
 
     @Test
     void readConfigShouldConvertJsonFileToConfigurationValues(){
-        ConfigurationManager.getInstance().readConfigurationFile("src/test/java/org/fungover/storm/config/configStub.json");
+        ConfigurationManager.getInstance().readConfigurationFile("src/test/java/org/fungover/storm/config/config.json");
         Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
 
         var portResult = conf.getPort();
