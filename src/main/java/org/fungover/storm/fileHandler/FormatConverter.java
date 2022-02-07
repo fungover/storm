@@ -9,31 +9,36 @@ public class FormatConverter {
     private FormatConverter() {
     }
 
-    private static final Map<String, String> subtypeToType = Map.of(
-            "jpeg", "image",
-            "png", "image",
-            "html", "text",
-            "csv", "text",
-            "css", "text",
-            "zip", "application",
-            "pdf", "application"
+    private static final Map<String, MIME> fileEndingToMIME = Map.of(
+            "jpeg", new MIME("image", "jpeg"),
+            "png", new MIME("image", "png"),
+            "html", new MIME("text", "html"),
+            "csv", new MIME("text", "csv"),
+            "css", new MIME("text", "css"),
+            "zip", new MIME("application", "zip"),
+            "pdf", new MIME("application", "pdf")
     );
 
     public static String MIME(String file) {
         String[] result = file.split("\\.");
-        String subtype = result[result.length - 1];
-        Optional<String> type = Optional.ofNullable(subtypeToType.get(subtype));
-        if (type.isEmpty()) {
-            type = Optional.of("application");
-            subtype = "octet-stream";
-        }
-
-        return type.get() + "/" + subtype;
+        String fileEnding = result[result.length - 1];
+        MIME mime = Optional.ofNullable(fileEndingToMIME.get(fileEnding))
+                .orElse(new MIME("application", "octet-stream"));
+        return mime.type + "/" + mime.subtype;
     }
 
     public static String MIME(Path filePath) {
-        String path = filePath.toString();
-        return MIME(path);
+        return MIME(filePath.toString());
+    }
+}
+
+class MIME {
+    String type;
+    String subtype;
+
+    public MIME(String type, String subtype) {
+        this.type = type;
+        this.subtype = subtype;
     }
 }
 
