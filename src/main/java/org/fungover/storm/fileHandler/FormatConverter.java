@@ -14,6 +14,7 @@ public class FormatConverter {
             "jpg", new MIME("image", "jpeg"),
             "png", new MIME("image", "png"),
             "html", new MIME("text", "html"),
+            "htm", new MIME("text", "html"),
             "csv", new MIME("text", "csv"),
             "css", new MIME("text", "css"),
             "zip", new MIME("application", "zip"),

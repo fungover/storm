@@ -80,6 +80,16 @@ class FormatConverterTest {
             assertThat(result).allMatch(mimeType -> mimeType.equals("image/jpeg"));
         }
 
+        @Test
+        void convertingHtmlAndHtmFileShouldReturnTheSameSameMIMEType() {
+            var result = new ArrayList<String>();
+
+            result.add(FormatConverter.MIME("test.html"));
+            result.add(FormatConverter.MIME("test.htm"));
+
+            assertThat(result).allMatch(mimeType -> mimeType.equals("text/html"));
+        }
+
     }
 
     @Nested
