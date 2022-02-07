@@ -22,15 +22,9 @@ public class ConfigurationManager {
     }
 
     public void readConfigurationFile(String filePath) {
-        FileReader fileReader;
-        try {
-            fileReader = new FileReader(filePath);
-        } catch (FileNotFoundException e) {
-            throw new MyConfigurationException(e);
-        }
         StringBuffer stringBuffer = new StringBuffer();
         int i;
-        try {
+        try(FileReader fileReader = new FileReader(filePath)) {
             while (( i = fileReader.read()) != -1) {
             stringBuffer.append((char) i);
             }
