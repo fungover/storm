@@ -11,6 +11,7 @@ public class FormatConverter {
 
     private static final Map<String, MIME> fileEndingToMIME = Map.of(
             "jpeg", new MIME("image", "jpeg"),
+            "jpg", new MIME("image", "jpeg"),
             "png", new MIME("image", "png"),
             "html", new MIME("text", "html"),
             "csv", new MIME("text", "csv"),
