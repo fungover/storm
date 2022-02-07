@@ -42,25 +42,26 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        ConfigurationManager.getInstance().readConfigurationFile("src/main/resources/config.json");
-        Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
-
         LOGGER.info("Starting server...");
-
-        Server server = new Server(conf.getPort())
-        LOGGER.info("Started server on port: " + conf.getPort);
+        Map<String, String> env = System.getenv();
+        Server server = new Server(getPort(env));
+        LOGGER.info("Started server on port: {}", server.port);
         server.start();
     }
 
     private static int getPort(Map<String, String> env) {
+        ConfigurationManager.getInstance().readConfigurationFile("src/main/resources/config.json");
+        Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
         int port = 8080;
         if (env.containsKey("SERVER_PORT")) {
             try {
                 String portEnv = env.get("SERVER_PORT");
                 port = Integer.parseInt(portEnv);
             } catch (NumberFormatException e) {
-                LOGGER.error("Invalid port! " + e.getMessage());
+                LOGGER.error("Invalid port! {}", e.getMessage());
             }
+        } else if (conf.getPort() != 0){
+            port = conf.getPort();
         }
         return port;
     }
