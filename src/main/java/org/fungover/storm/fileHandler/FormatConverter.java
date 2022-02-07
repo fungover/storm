@@ -10,27 +10,30 @@ public class FormatConverter {
     private FormatConverter() {
     }
 
+    private static final String IMAGE = "image";
+    private static final String TEXT = "text";
+    private static final String APPLICATION = "application";
     private static final Map<String, MIME> fileEndingToMIME = new HashMap<>();
 
     static {
-        fileEndingToMIME.put("jpeg", new MIME("image", "jpeg"));
-        fileEndingToMIME.put("jpg", new MIME("image", "jpeg"));
-        fileEndingToMIME.put("png", new MIME("image", "png"));
-        fileEndingToMIME.put("html", new MIME("text", "html"));
-        fileEndingToMIME.put("htm", new MIME("text", "html"));
-        fileEndingToMIME.put("csv", new MIME("text", "csv"));
-        fileEndingToMIME.put("css", new MIME("text", "css"));
-        fileEndingToMIME.put("zip", new MIME("application", "zip"));
-        fileEndingToMIME.put("pdf", new MIME("application", "pdf"));
-        fileEndingToMIME.put("tiff", new MIME("image", "tiff"));
-        fileEndingToMIME.put("tif", new MIME("image", "tiff"));
+        fileEndingToMIME.put("jpeg", new MIME(IMAGE, "jpeg"));
+        fileEndingToMIME.put("jpg", new MIME(IMAGE, "jpeg"));
+        fileEndingToMIME.put("png", new MIME(IMAGE, "png"));
+        fileEndingToMIME.put("html", new MIME(TEXT, "html"));
+        fileEndingToMIME.put("htm", new MIME(TEXT, "html"));
+        fileEndingToMIME.put("csv", new MIME(TEXT, "csv"));
+        fileEndingToMIME.put("css", new MIME(TEXT, "css"));
+        fileEndingToMIME.put("zip", new MIME(APPLICATION, "zip"));
+        fileEndingToMIME.put("pdf", new MIME(APPLICATION, "pdf"));
+        fileEndingToMIME.put("tiff", new MIME(IMAGE, "tiff"));
+        fileEndingToMIME.put("tif", new MIME(IMAGE, "tiff"));
     }
 
     public static String MIME(String file) {
         String[] result = file.split("\\.");
         String fileEnding = result[result.length - 1];
         MIME mime = Optional.ofNullable(fileEndingToMIME.get(fileEnding))
-                .orElse(new MIME("application", "octet-stream"));
+                .orElse(new MIME(APPLICATION, "octet-stream"));
         return mime.type + "/" + mime.subtype;
     }
 
@@ -48,4 +51,5 @@ class MIME {
         this.subtype = subtype;
     }
 }
+
 
