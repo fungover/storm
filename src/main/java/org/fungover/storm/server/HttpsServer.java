@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.file.Path;
@@ -31,7 +32,7 @@ public class HttpsServer extends Server {
         }
     }
 
-    private ServerSocket getServerSocket(int port) throws Exception {
+    private ServerSocket getServerSocket(int port) throws IOException {
         Path keyStorePath = Path.of("./etc/storm/ssl/keystore.jks");
         char[] keyStorePassword = getKeyStorePassword();
 
@@ -48,16 +49,25 @@ public class HttpsServer extends Server {
         return "password".toCharArray();
     }
 
-    private SSLContext getSslContext(Path keyStorePath, char[] keyStorePassword) throws Exception {
-        var keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream(keyStorePath.toFile()), keyStorePassword);
+    private SSLContext getSslContext(Path keyStorePath, char[] keyStorePassword) {
+        SSLContext sslContext;
 
-        var keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-        keyManagerFactory.init(keyStore, keyStorePassword);
+        try {
+            var keyStore = KeyStore.getInstance("JKS");
+            keyStore.load(new FileInputStream(keyStorePath.toFile()), keyStorePassword);
 
-        var sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+            var keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+            keyManagerFactory.init(keyStore, keyStorePassword);
+
+            sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+        } catch (Exception e) {
+            throw new SslContextException();
+        }
 
         return sslContext;
+    }
+
+    private static class SslContextException extends RuntimeException {
     }
 }
