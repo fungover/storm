@@ -45,15 +45,14 @@ public class Server {
         int port = getPort(env);
         Server server;
 
-        if (port == 8433) {
+        if (port == 8443) {
             server = new HttpsServer(port);
         } else {
             server = new Server(port);
         }
 
+        LOGGER.info("Started server on port: {}", server.getPort());
         server.start();
-        LOGGER.info("Started server on port: {}", server.port);
-
     }
 
     private static int getPort(Map<String, String> env) {
