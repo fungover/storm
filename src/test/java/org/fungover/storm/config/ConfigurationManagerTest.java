@@ -22,14 +22,6 @@ class ConfigurationManagerTest {
     }
 
     @Test
-    void readConfigurationFileShouldThrowFileNotFoundException(){
-        assertThatThrownBy(() -> ConfigurationManager.getInstance()
-                .readConfigurationFile("NoFilePath"))
-                .hasCause(new FileNotFoundException("NoFilePath (The system cannot find the file specified)"));
-    }
-
-
-    @Test
     void getCurrentConfigurationShouldShowMessageWhenExceptionEmerged(){
         assertThatThrownBy(() -> ConfigurationManager.getInstance().getCurrentConfiguration())
                 .hasMessage("No Current Configuration Set.");
