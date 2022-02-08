@@ -1,7 +1,7 @@
-package org.fungover.storm.fileHandler.re;
+package org.fungover.storm.filehandler.re;
 
 import org.fungover.storm.client.HttpParser;
-import org.fungover.storm.fileHandler.FormatConverter;
+import org.fungover.storm.filehandler.FormatConverter;
 
 import java.io.IOException;
 import java.nio.file.Files;
