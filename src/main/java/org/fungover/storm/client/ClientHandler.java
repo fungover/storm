@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.nio.file.Files;
 
 public class ClientHandler implements Runnable {
-    private static final Logger LOGGER = LogManager.getLogger("SERVER");
+    private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
     private final Socket clientSocket;
     private OutputStream out;
     private BufferedReader in;
