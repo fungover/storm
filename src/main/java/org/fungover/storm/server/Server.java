@@ -42,13 +42,22 @@ public class Server {
     public static void main(String[] args) {
         LOGGER.info("Starting server...");
         Map<String, String> env = System.getenv();
-        Server server = new Server(getPort(env));
-        LOGGER.info("Started server on port: {}", server.port);
+        int port = getPort(env);
+        Server server;
+
+        if (port == 8433) {
+            server = new HttpsServer(port);
+        } else {
+            server = new Server(port);
+        }
+
         server.start();
+        LOGGER.info("Started server on port: {}", server.port);
+
     }
 
     private static int getPort(Map<String, String> env) {
-        int port = 8080;
+        int port = 8443;
         if (env.containsKey("SERVER_PORT")) {
             try {
                 String portEnv = env.get("SERVER_PORT");
@@ -58,5 +67,17 @@ public class Server {
             }
         }
         return port;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 }
