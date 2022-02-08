@@ -21,8 +21,9 @@ class FileRequestHandlerTest {
                 Accept-Language: en-US,en;q=0.5
                 Connection: keep-alive
                 """;
-        FileInfo info = FileRequestHandler.handleRequest(req);
-        byte[][] result = FileRequestHandler.writeResponse(info);
+        FileRequestHandler fileRequestHandler = new FileRequestHandler();
+        FileInfo info = fileRequestHandler.handleRequest(req);
+        byte[][] result = fileRequestHandler.writeResponse(info);
         Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + file.length +
@@ -43,8 +44,9 @@ class FileRequestHandlerTest {
                 Accept-Language: en-US,en;q=0.5
                 Connection: keep-alive
                 """;
-        FileInfo info = FileRequestHandler.handleRequest(req);
-        byte[][] result = FileRequestHandler.writeResponse(info);
+        FileRequestHandler fileRequestHandler = new FileRequestHandler();
+        FileInfo info = fileRequestHandler.handleRequest(req);
+        byte[][] result = fileRequestHandler.writeResponse(info);
         Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 200 OK \r\nContent-length:" + file.length +

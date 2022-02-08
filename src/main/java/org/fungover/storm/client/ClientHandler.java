@@ -14,9 +14,11 @@ public class ClientHandler implements Runnable {
     private OutputStream out;
     private BufferedReader in;
     private HttpResponseStatusCodes statusCode;
+    private FileRequestHandler fileRequestHandler;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, FileRequestHandler fileRequestHandler) {
         this.clientSocket = socket;
+        this.fileRequestHandler = fileRequestHandler;
     }
 
     @Override
@@ -27,8 +29,8 @@ public class ClientHandler implements Runnable {
 
             String input = in.readLine();
 
-            FileInfo fileInfo = FileRequestHandler.handleRequest(input);
-            byte[][] response = FileRequestHandler.writeResponse(fileInfo);
+            FileInfo fileInfo = fileRequestHandler.handleRequest(input);
+            byte[][] response = fileRequestHandler.writeResponse(fileInfo);
 
             out.write(response[0]);
             out.write(response[1]);
