@@ -35,7 +35,8 @@ public class ClientHandler implements Runnable {
                 fileInfo = fileRequestHandler.handleRequest(input);
                 response = fileRequestHandler.writeResponse(fileInfo);
             } catch (FileNotFoundException e){
-                response = handleFileNotFoundException(fileRequestHandler, e);
+                LOGGER.error("File not found: {}", e.getRequestPath());
+                response = getFileNotFoundResponse(fileRequestHandler, e);
             }
 
             out.write(response[0]);
@@ -49,11 +50,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private byte[][] handleFileNotFoundException(FileRequestHandler fileRequestHandler,
-                                                 FileNotFoundException e) throws IOException {
+    private byte[][] getFileNotFoundResponse(FileRequestHandler fileRequestHandler,
+                                             FileNotFoundException e) throws IOException {
         FileInfo fileInfo;
         byte[][] response;
-        LOGGER.error("File not found: {}", e.getRequestPath());
         fileInfo = fileRequestHandler.handleError(e.getParsedRequest(), e.getError404FileName(), e.getResponseCode());
         if(Files.exists(fileInfo.getPath())){
             response = fileRequestHandler.writeResponse(fileInfo, e.getResponseCode());}
