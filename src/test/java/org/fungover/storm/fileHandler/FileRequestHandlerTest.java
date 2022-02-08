@@ -1,15 +1,17 @@
 package org.fungover.storm.fileHandler;
 
+import org.fungover.storm.client.HttpParser;
 import org.fungover.storm.fileHandler.re.FileInfo;
 import org.fungover.storm.fileHandler.re.FileRequestHandler;
+import org.fungover.storm.fileHandler.re.ResponseCode;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class FileRequestHandlerTest {
 
@@ -60,7 +62,7 @@ public class FileRequestHandlerTest {
     }
 
     @Test
-    void incorrectFilePathOrUrlShouldPointTo404ErrorPage() throws IOException {
+    void pointTo404ErrorPageIfIncorrectFilePathOrUrl() throws IOException {
         FileRequestHandler fileRequestHandler = new FileRequestHandler();
         String req = """
                 GET /nonexistantFile.html HTTP/1.1
@@ -69,8 +71,8 @@ public class FileRequestHandlerTest {
                 Accept-Language: en-US,en;q=0.5
                 Connection: keep-alive
                 """;
-        FileInfo info = fileRequestHandler.handleRequest(req);
-        byte[][] result = fileRequestHandler.writeResponse(info);
+        Map<String, String> parsedRequest = HttpParser.getRequestHeaders(req);
+        FileInfo info = fileRequestHandler.handleError(parsedRequest,"404.html", ResponseCode.NOT_FOUND.getCode());
         Path path = info.getPath();
         byte[] file = Files.readAllBytes(path);
         String response = "HTTP/1.1 404 Not Found \r\nContent-length:" + file.length +
@@ -78,7 +80,20 @@ public class FileRequestHandlerTest {
             "\r\nConnection: Closed\r\n\r\n";
         byte[][] expected = new byte[][]{response.getBytes(), file};
 
+        byte[][] result = fileRequestHandler.writeResponse(info, "404 Not Found");
 
         assertThat(result).isEqualTo(expected);
     }
+
+    @Test
+    void absent404ErrorPageInWebrootShouldReturnOnlyCode404() {
+        FileRequestHandler fileRequestHandler = new FileRequestHandler();
+        String response = "HTTP/1.1 404 Not Found \r\nConnection: Closed\r\n\r\n";
+        byte[][] expected = new byte[][]{response.getBytes()};
+
+        byte[][] result = fileRequestHandler.writeResponse("404 Not Found");
+
+        assertThat(result).isEqualTo(expected);
+    }
+
 }

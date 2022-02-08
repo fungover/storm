@@ -4,7 +4,7 @@ public enum ResponseCode {
     OK("200 OK"),
     NOT_FOUND("404 Not Found");
 
-    private String code;
+    private final String code;
 
     ResponseCode(String code){
         this.code = code;
