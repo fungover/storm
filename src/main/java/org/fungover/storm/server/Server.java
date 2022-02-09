@@ -50,7 +50,7 @@ public class Server {
     }
 
     private static int getPort(Map<String, String> env) {
-        ConfigurationManager.getInstance().readConfigurationFile("src/main/resources/config.json");
+        ConfigurationManager.getInstance().readConfigurationFile("config/config.json");
         Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
         int port = 8080;
         if (env.containsKey("SERVER_PORT")) {
