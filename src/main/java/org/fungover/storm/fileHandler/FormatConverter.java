@@ -1,4 +1,4 @@
-package org.fungover.storm.filehandler;
+package org.fungover.storm.fileHandler;
 
 import java.nio.file.Path;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package org.fungover.storm.filehandler;
+package org.fungover.storm.fileHandler;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
