@@ -50,8 +50,8 @@ public class Server {
     }
 
     private static int getPort(Map<String, String> env) {
-        ConfigurationManager.getInstance().readConfigurationFile("etc/storm/config/config.json");
-        Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
+        ConfigurationManager.readConfigurationFile("etc/storm/config/config.json");
+        Configuration conf = ConfigurationManager.getCurrentConfiguration();
         int port = 8080;
         if (env.containsKey("SERVER_PORT")) {
             try {

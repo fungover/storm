@@ -1,13 +1,13 @@
 package org.fungover.storm.config;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
 public class Json {
 
+    private Json(){}
 
     public static Configuration parse(String filePath) throws IOException {
             ObjectMapper mapper = new ObjectMapper();

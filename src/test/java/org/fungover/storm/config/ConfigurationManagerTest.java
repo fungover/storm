@@ -11,8 +11,8 @@ class ConfigurationManagerTest {
 
     @Test
     void readConfigShouldConvertJsonFileToConfigurationValues(){
-        ConfigurationManager.getInstance().readConfigurationFile("src/test/java/org/fungover/storm/config/config.json");
-        Configuration conf = ConfigurationManager.getInstance().getCurrentConfiguration();
+        ConfigurationManager.readConfigurationFile("src/test/java/org/fungover/storm/config/config.json");
+        Configuration conf = ConfigurationManager.getCurrentConfiguration();
 
         var portResult = conf.getPort();
         var webrootResult = conf.getWebroot();
@@ -23,7 +23,7 @@ class ConfigurationManagerTest {
 
     @Test
     void getCurrentConfigurationShouldShowMessageWhenExceptionEmerged(){
-        assertThatThrownBy(() -> ConfigurationManager.getInstance().getCurrentConfiguration())
+        assertThatThrownBy(() -> ConfigurationManager.getCurrentConfiguration())
                 .hasMessage("No Current Configuration Set.");
     }
 }

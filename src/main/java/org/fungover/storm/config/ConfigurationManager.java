@@ -14,13 +14,7 @@ public class ConfigurationManager {
     private ConfigurationManager() {
     }
 
-    public static ConfigurationManager getInstance() {
-        if (myConfigurationManager == null)
-            myConfigurationManager = new ConfigurationManager();
-        return myConfigurationManager;
-    }
-
-    public void readConfigurationFile(String filePath) {
+    public static void readConfigurationFile(String filePath) {
         try {
             myCurrentConfiguration = Json.parse(filePath);
         } catch (IOException e) {
@@ -28,7 +22,7 @@ public class ConfigurationManager {
         }
     }
 
-    public Configuration getCurrentConfiguration() {
+    public static Configuration getCurrentConfiguration() {
         if (myCurrentConfiguration == null) {
             throw new MyConfigurationException("No Current Configuration Set.");
         }
