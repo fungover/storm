@@ -27,7 +27,7 @@ public class Server {
         LOGGER.info("Starting server...");
         LOGGER.info("Loading config file");
         Map<String, String> env = System.getenv();
-        if (Files.exists(Paths.get("etc", "storm", "config", "config.json")))
+        if (Files.exists(Paths.get("/etc/storm/config/config.json")))
             ConfigurationManager.loadConfigurationFile("/etc/storm/config/config.json");
         else
             ConfigurationManager.loadConfigurationFile("config/config.json");
