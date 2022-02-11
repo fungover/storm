@@ -62,7 +62,7 @@ public class Server {
     }
 
     private static int getPort(Map<String, String> env, Configuration conf) {
-        int port = 8080;
+        int port = 8443;
         if (env.containsKey("SERVER_PORT")) {
             try {
                 String portEnv = env.get("SERVER_PORT");
