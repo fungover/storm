@@ -27,18 +27,42 @@ public class Server {
         LOGGER.info("Starting server...");
         LOGGER.info("Loading config file");
         Map<String, String> env = System.getenv();
+
         if (Files.exists(Paths.get("/etc/storm/config/config.json")))
             ConfigurationManager.loadConfigurationFile("/etc/storm/config/config.json");
         else
             ConfigurationManager.loadConfigurationFile("config/config.json");
-        Server server = new Server(getPort(env));
-        LOGGER.info("Started server on port: {}", server.port);
+
+        Configuration conf = ConfigurationManager.getCurrentConfiguration();
+
+        int port = getPort(env, conf);
+        Server server;
+
+        server = getServerType(env, conf, port);
+
+        LOGGER.info("Started server on port: {}", server.getPort());
         server.start();
     }
 
-    private static int getPort(Map<String, String> env) {
-        Configuration conf = ConfigurationManager.getCurrentConfiguration();
-        int port = 8080;
+    private static Server getServerType(Map<String, String> env, Configuration conf, int port) {
+        Server server;
+        if (env.containsKey("SERVER_TYPE")) {
+            String serverType = env.get("SERVER_TYPE");
+            if (serverType.equalsIgnoreCase("https")) {
+                server = new HttpsServer(port);
+            } else {
+                server = new Server(port);
+            }
+        } else if (conf.getType().equals("https")) {
+            server = new HttpsServer(port);
+        } else {
+            server = new Server(port);
+        }
+        return server;
+    }
+
+    private static int getPort(Map<String, String> env, Configuration conf) {
+        int port = 8443;
         if (env.containsKey("SERVER_PORT")) {
             try {
                 String portEnv = env.get("SERVER_PORT");
@@ -49,6 +73,10 @@ public class Server {
         } else if (conf.getPort() != 0) {
             port = conf.getPort();
         }
+        return port;
+    }
+
+    public int getPort() {
         return port;
     }
 
@@ -70,5 +98,9 @@ public class Server {
                 LOGGER.error(e.getMessage());
             }
         }
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 }

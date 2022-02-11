@@ -3,6 +3,7 @@ package org.fungover.storm.config;
 public class Configuration {
     private int port;
     private String webroot;
+    private String type;
 
     public int getPort() {
         return port;
@@ -20,5 +21,14 @@ public class Configuration {
     public Configuration setWebroot(String webroot) {
         this.webroot = webroot;
         return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String setType(String type) {
+        this.type = type;
+        return type;
     }
 }
