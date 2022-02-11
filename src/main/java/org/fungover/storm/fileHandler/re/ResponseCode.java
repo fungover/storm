@@ -2,7 +2,8 @@ package org.fungover.storm.fileHandler.re;
 
 public enum ResponseCode {
     OK("200 OK"),
-    NOT_FOUND("404 Not Found");
+    NOT_FOUND("404 Not Found"),
+    ERROR_500("Error 500");
 
     private final String code;
 
