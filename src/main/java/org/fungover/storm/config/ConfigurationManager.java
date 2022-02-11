@@ -1,13 +1,13 @@
 package org.fungover.storm.config;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.FileReader;
 import java.io.IOException;
 
 public class ConfigurationManager {
 
+    private static final Logger LOGGER = LogManager.getLogger(ConfigurationManager.class);
     private static ConfigurationManager myConfigurationManager;
     private static Configuration myCurrentConfiguration;
 
@@ -21,26 +21,10 @@ public class ConfigurationManager {
     }
 
     public void readConfigurationFile(String filePath) {
-        StringBuffer stringBuffer = new StringBuffer();
-        int i;
-        try (FileReader fileReader = new FileReader(filePath)) {
-            while ((i = fileReader.read()) != -1) {
-                stringBuffer.append((char) i);
-            }
+        try {
+            myCurrentConfiguration = Json.parse(filePath);
         } catch (IOException e) {
-            throw new MyConfigurationException(e);
-        }
-
-        JsonNode conf;
-        try {
-            conf = Json.parse(stringBuffer.toString());
-        } catch (JsonProcessingException e) {
-            throw new MyConfigurationException("Error parsing the Configuration File", e);
-        }
-        try {
-            myCurrentConfiguration = Json.fromJson(conf, Configuration.class);
-        } catch (JsonProcessingException e) {
-            throw new MyConfigurationException("Error parsing the Configuration file, internal", e);
+            LOGGER.error(e.getMessage());
         }
     }
 
