@@ -19,14 +19,11 @@ class ClientHandlerTest {
 
 
     @Test
-    void runShouldThrow500ErrorMessage() throws IOException {
-
+    void exceptionWithError500MessageShouldBeThrown() throws IOException {
 
         Socket clientSocket = Mockito.mock(Socket.class);
         Mockito.when(clientSocket.getOutputStream()).thenThrow(new RuntimeException(ERROR_500.getCode()));
-        Throwable exceptionThatWasThrown = assertThrows(RuntimeException.class, () -> {
-            clientSocket.getOutputStream();
-        });
+        Throwable exceptionThatWasThrown = assertThrows(RuntimeException.class, clientSocket::getOutputStream);
 
         assertThat(exceptionThatWasThrown.getMessage()).isEqualTo(ERROR_500.getCode());
 
