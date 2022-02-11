@@ -34,21 +34,11 @@ public class FormatConverter {
         String fileEnding = result[result.length - 1];
         MIME mime = Optional.ofNullable(fileEndingToMIME.get(fileEnding))
                 .orElse(new MIME(APPLICATION, "octet-stream"));
-        return mime.type + "/" + mime.subtype;
+        return mime.type() + "/" + mime.subtype();
     }
 
     public static String MIME(Path filePath) {
         return MIME(filePath.toString());
-    }
-}
-
-class MIME {
-    String type;
-    String subtype;
-
-    public MIME(String type, String subtype) {
-        this.type = type;
-        this.subtype = subtype;
     }
 }
 
