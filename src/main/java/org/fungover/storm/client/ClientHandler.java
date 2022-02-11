@@ -13,8 +13,6 @@ import java.nio.file.Files;
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
     private final Socket clientSocket;
-    private OutputStream out;
-    private BufferedReader in;
     private HttpResponseStatusCodes statusCode;
 
     public ClientHandler(Socket socket) {
@@ -23,6 +21,9 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+         OutputStream out;
+         BufferedReader in;
+
         try {
             FileRequestHandler fileRequestHandler = new FileRequestHandler();
             out = clientSocket.getOutputStream();
