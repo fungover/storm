@@ -33,7 +33,7 @@ public class HttpsServer extends Server {
     }
 
     private ServerSocket getServerSocket(int port) throws IOException {
-        Path keyStorePath = Path.of("./etc/storm/ssl/keystore.jks");
+        Path keyStorePath = Path.of("etc/storm/ssl/keystore.jks");
         char[] keyStorePassword = getKeyStorePassword();
 
         var serverSocket = getSslContext(keyStorePath, keyStorePassword)
