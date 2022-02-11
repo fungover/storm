@@ -3,7 +3,6 @@ package org.fungover.storm.config;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -15,7 +14,7 @@ public class ConfigurationManager {
     private ConfigurationManager() {
     }
 
-    public static ConfigurationManager getInstance(){
+    public static ConfigurationManager getInstance() {
         if (myConfigurationManager == null)
             myConfigurationManager = new ConfigurationManager();
         return myConfigurationManager;
@@ -24,13 +23,14 @@ public class ConfigurationManager {
     public void readConfigurationFile(String filePath) {
         StringBuffer stringBuffer = new StringBuffer();
         int i;
-        try(FileReader fileReader = new FileReader(filePath)) {
-            while (( i = fileReader.read()) != -1) {
-            stringBuffer.append((char) i);
+        try (FileReader fileReader = new FileReader(filePath)) {
+            while ((i = fileReader.read()) != -1) {
+                stringBuffer.append((char) i);
             }
         } catch (IOException e) {
             throw new MyConfigurationException(e);
         }
+
         JsonNode conf;
         try {
             conf = Json.parse(stringBuffer.toString());
@@ -44,7 +44,7 @@ public class ConfigurationManager {
         }
     }
 
-    public Configuration getCurrentConfiguration(){
+    public Configuration getCurrentConfiguration() {
         if (myCurrentConfiguration == null) {
             throw new MyConfigurationException("No Current Configuration Set.");
         }
