@@ -33,16 +33,7 @@ public class ClientHandler implements Runnable {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String input = in.readLine();
-            FileInfo fileInfo;
-            byte[][] response;
-            
-            try {
-                fileInfo = fileRequestHandler.handleRequest(input);
-                response = fileRequestHandler.writeResponse(fileInfo);
-            } catch (FileNotFoundException e){
-                LOGGER.error("File not found: {}", e.getRequestPath());
-                response = getFileNotFoundResponse(e);
-            }
+            byte[][] response = getResponse(input);
 
             out.write(response[0]);
             out.write(response[1]);
@@ -57,6 +48,19 @@ public class ClientHandler implements Runnable {
             else
                 LOGGER.error(e.getMessage());
         }
+    }
+
+    private byte[][] getResponse(String input) throws IOException {
+        FileInfo fileInfo;
+        byte[][] response;
+        try {
+            fileInfo = fileRequestHandler.handleRequest(input);
+            response = fileRequestHandler.writeResponse(fileInfo);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("File not found: {}", e.getRequestPath());
+            response = getFileNotFoundResponse(e);
+        }
+        return response;
     }
 
     private byte[][] getFileNotFoundResponse(FileNotFoundException e) throws IOException {
