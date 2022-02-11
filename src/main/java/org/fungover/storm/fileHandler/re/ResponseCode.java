@@ -3,6 +3,7 @@ package org.fungover.storm.fileHandler.re;
 public enum ResponseCode {
     OK("200 OK"),
     NOT_FOUND("404 Not Found"),
+    ERROR_500("Error 500"),
     UNAUTHORIZED("401 Unauthorized"),
     FORBIDDEN("403 Forbidden"),
     TEAPOT("418 I´m a teapot"),
