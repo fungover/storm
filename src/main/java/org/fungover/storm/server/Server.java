@@ -23,51 +23,45 @@ public class Server {
         this.port = port;
     }
 
-    public void start() {
-        executorService = Executors.newCachedThreadPool();
-
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            acceptConnections(serverSocket);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    public void acceptConnections(ServerSocket serverSocket) {
-        while (!serverSocket.isClosed()) {
-            try {
-                executorService.submit(new ClientHandler(serverSocket.accept()));
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage());
-            }
-        }
-    }
-
     public static void main(String[] args) {
         LOGGER.info("Starting server...");
         LOGGER.info("Loading config file");
         Map<String, String> env = System.getenv();
+
         if (Files.exists(Paths.get("/etc/storm/config/config.json")))
             ConfigurationManager.loadConfigurationFile("/etc/storm/config/config.json");
         else
             ConfigurationManager.loadConfigurationFile("config/config.json");
-        Server server = new Server(getPort(env));
-        LOGGER.info("Started server on port: {}", server.port);
-        int port = getPort(env);
+
+        Configuration conf = ConfigurationManager.getCurrentConfiguration();
+
+        int port = getPort(env, conf);
         Server server;
 
-        if (port == 8443) {
-            server = new HttpsServer(port);
-        } else {
-            server = new Server(port);
-        }
+        server = getServerType(env, conf, port);
 
         LOGGER.info("Started server on port: {}", server.getPort());
         server.start();
     }
 
-    private static int getPort(Map<String, String> env) {
-        Configuration conf = ConfigurationManager.getCurrentConfiguration();
+    private static Server getServerType(Map<String, String> env, Configuration conf, int port) {
+        Server server;
+        if (env.containsKey("SERVER_TYPE")) {
+            String serverType = env.get("SERVER_TYPE");
+            if (serverType.equalsIgnoreCase("https")) {
+                server = new HttpsServer(port);
+            } else {
+                server = new Server(port);
+            }
+        } else if (conf.getType().equals("https")) {
+            server = new HttpsServer(port);
+        } else {
+            server = new Server(port);
+        }
+        return server;
+    }
+
+    private static int getPort(Map<String, String> env, Configuration conf) {
         int port = 8080;
         if (env.containsKey("SERVER_PORT")) {
             try {
@@ -82,6 +76,10 @@ public class Server {
         return port;
     }
 
+    public int getPort() {
+        return port;
+    }
+
     public void start() {
         executorService = Executors.newCachedThreadPool();
 
@@ -100,14 +98,6 @@ public class Server {
                 LOGGER.error(e.getMessage());
             }
         }
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public ExecutorService getExecutorService() {
-        return executorService;
     }
 
     public void setExecutorService(ExecutorService executorService) {
