@@ -8,13 +8,12 @@ import java.io.IOException;
 public class ConfigurationManager {
 
     private static final Logger LOGGER = LogManager.getLogger(ConfigurationManager.class);
-    private static ConfigurationManager myConfigurationManager;
     private static Configuration myCurrentConfiguration;
 
     private ConfigurationManager() {
     }
 
-    public static void readConfigurationFile(String filePath) {
+    public static void loadConfigurationFile(String filePath) {
         try {
             myCurrentConfiguration = Json.parse(filePath);
         } catch (IOException e) {

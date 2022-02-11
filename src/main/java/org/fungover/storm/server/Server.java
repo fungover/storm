@@ -43,6 +43,8 @@ public class Server {
 
     public static void main(String[] args) {
         LOGGER.info("Starting server...");
+        LOGGER.info("Loading config file");
+        ConfigurationManager.loadConfigurationFile("etc/storm/config/config.json");
         Map<String, String> env = System.getenv();
         Server server = new Server(getPort(env));
         LOGGER.info("Started server on port: {}", server.port);
@@ -50,7 +52,6 @@ public class Server {
     }
 
     private static int getPort(Map<String, String> env) {
-        ConfigurationManager.readConfigurationFile("etc/storm/config/config.json");
         Configuration conf = ConfigurationManager.getCurrentConfiguration();
         int port = 8080;
         if (env.containsKey("SERVER_PORT")) {
