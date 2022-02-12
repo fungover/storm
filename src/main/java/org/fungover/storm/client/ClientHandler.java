@@ -2,11 +2,14 @@ package org.fungover.storm.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fungover.storm.fileHandler.re.FileInfo;
 import org.fungover.storm.fileHandler.re.FileNotFoundException;
 import org.fungover.storm.fileHandler.re.FileRequestHandler;
-import org.fungover.storm.fileHandler.re.FileInfo;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
 
@@ -16,29 +19,21 @@ public class ClientHandler implements Runnable {
     private OutputStream out;
     private BufferedReader in;
     private HttpResponseStatusCodes statusCode;
+    private FileRequestHandler fileRequestHandler;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, FileRequestHandler fileRequestHandler) {
         this.clientSocket = socket;
+        this.fileRequestHandler = fileRequestHandler;
     }
 
     @Override
     public void run() {
         try {
-            FileRequestHandler fileRequestHandler = new FileRequestHandler();
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String input = in.readLine();
-            FileInfo fileInfo;
-            byte[][] response;
-
-            try {
-                fileInfo = fileRequestHandler.handleRequest(input);
-                response = fileRequestHandler.writeResponse(fileInfo);
-            } catch (FileNotFoundException e){
-                LOGGER.error("File not found: {}", e.getRequestPath());
-                response = getFileNotFoundResponse(fileRequestHandler, e);
-            }
+            byte[][] response = getResponse(input);
 
             out.write(response[0]);
             out.write(response[1]);
@@ -55,14 +50,26 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private byte[][] getFileNotFoundResponse(FileRequestHandler fileRequestHandler,
-                                             FileNotFoundException e) throws IOException {
+    private byte[][] getResponse(String input) throws IOException {
+        FileInfo fileInfo;
+        byte[][] response;
+        try {
+            fileInfo = fileRequestHandler.handleRequest(input);
+            response = fileRequestHandler.writeResponse(fileInfo);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("File not found: {}", e.getRequestPath());
+            response = getFileNotFoundResponse(e);
+        }
+        return response;
+    }
+
+    private byte[][] getFileNotFoundResponse(FileNotFoundException e) throws IOException {
         FileInfo fileInfo;
         byte[][] response;
         fileInfo = fileRequestHandler.handleError(e.getParsedRequest(), e.getError404FileName(), e.getResponseCode());
-        if(Files.exists(fileInfo.getPath())){
-            response = fileRequestHandler.writeResponse(fileInfo, e.getResponseCode());}
-        else
+        if (Files.exists(fileInfo.getPath())) {
+            response = fileRequestHandler.writeResponse(fileInfo, e.getResponseCode());
+        } else
             response = fileRequestHandler.writeResponse(e.getResponseCode());
         return response;
     }

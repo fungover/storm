@@ -3,6 +3,7 @@ package org.fungover.storm.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fungover.storm.client.ClientHandler;
+import org.fungover.storm.fileHandler.re.FileRequestHandler;
 import org.fungover.storm.config.Configuration;
 import org.fungover.storm.config.ConfigurationManager;
 
@@ -93,7 +94,7 @@ public class Server {
     public void acceptConnections(ServerSocket serverSocket) {
         while (!serverSocket.isClosed()) {
             try {
-                executorService.submit(new ClientHandler(serverSocket.accept()));
+                executorService.submit(new ClientHandler(serverSocket.accept(), new FileRequestHandler()));
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
             }

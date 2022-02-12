@@ -21,6 +21,7 @@ public class FileRequestHandler {
 
     public FileInfo handleRequest(String request) throws IOException {
         Map<String, String> map = HttpParser.getRequestHeaders(request);
+
         if (map.get("path").equals("/"))
             map.put("path", "index.html");
         var path = Paths.get(getAbsolutePathToResourceFromContext(map, System.getProperty("os.name")));
@@ -46,6 +47,7 @@ public class FileRequestHandler {
     }
 
     public byte[][] writeResponse(FileInfo fileInfo, String responseCode) {
+
         long fileLength = fileInfo.getFile().length;
         Path path = fileInfo.getPath();
         String response = "HTTP/1.1 " + responseCode + " \r\nContent-length:" + fileLength +
@@ -68,7 +70,7 @@ public class FileRequestHandler {
         return path;
     }
 
-    private static String getAbsolutePathToResourceFromContext(Map<String, String> map, String context) {
+    private String getAbsolutePathToResourceFromContext(Map<String, String> map, String context) {
         String absolutePath = System.getProperty("user.dir");
         if (context.contains("Windows"))
             absolutePath = absolutePath.concat("\\webroot\\" + map.get("path"));
