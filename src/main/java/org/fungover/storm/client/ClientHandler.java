@@ -16,8 +16,6 @@ import java.nio.file.Files;
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
     private final Socket clientSocket;
-    private OutputStream out;
-    private BufferedReader in;
     private HttpResponseStatusCodes statusCode;
     private FileRequestHandler fileRequestHandler;
 
@@ -28,6 +26,9 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+         OutputStream out;
+         BufferedReader in;
+
         try {
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
