@@ -4,6 +4,8 @@
 [![pull requests](https://img.shields.io/github/issues-pr/fungover/storm)](https://github.com/fungover/storm/pulls)
 [![issues](https://img.shields.io/github/issues/fungover/storm)](https://github.com/fungover/storm/issues)
 [![Qodana](https://github.com/fungover/storm/actions/workflows/code_quality.yml/badge.svg)](https://github.com/fungover/storm/actions/workflows/code_quality.yml)
+![coverage](../badges/jacoco.svg)
+![branches coverage](../badges/branches.svg)
 [![GitHub release](https://img.shields.io/github/v/release/fungover/storm)](https://github.com/fungover/storm/releases)
 ![Jokes Card](https://readme-jokes.vercel.app/api)
 
