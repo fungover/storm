@@ -1,8 +1,8 @@
-package org.fungover.storm.fileHandler.re;
+package org.fungover.storm.filehandler.re;
 
 import java.util.Map;
 
-import static org.fungover.storm.fileHandler.re.ResponseCode.NOT_FOUND;
+import static org.fungover.storm.filehandler.re.ResponseCode.NOT_FOUND;
 
 public class FileNotFoundException extends RuntimeException {
 

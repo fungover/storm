@@ -1,9 +1,9 @@
-package org.fungover.storm.fileHandler;
+package org.fungover.storm.filehandler;
 
 import org.fungover.storm.client.HttpParser;
-import org.fungover.storm.fileHandler.re.FileInfo;
-import org.fungover.storm.fileHandler.re.FileRequestHandler;
-import org.fungover.storm.fileHandler.re.ResponseCode;
+import org.fungover.storm.filehandler.re.FileInfo;
+import org.fungover.storm.filehandler.re.FileRequestHandler;
+import org.fungover.storm.filehandler.re.ResponseCode;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
