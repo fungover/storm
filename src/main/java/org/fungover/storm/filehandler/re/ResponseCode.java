@@ -1,4 +1,4 @@
-package org.fungover.storm.fileHandler.re;
+package org.fungover.storm.filehandler.re;
 
 public enum ResponseCode {
     OK("200 OK"),

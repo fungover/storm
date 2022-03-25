@@ -2,9 +2,9 @@ package org.fungover.storm.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fungover.storm.fileHandler.re.FileInfo;
-import org.fungover.storm.fileHandler.re.FileNotFoundException;
-import org.fungover.storm.fileHandler.re.FileRequestHandler;
+import org.fungover.storm.filehandler.re.FileInfo;
+import org.fungover.storm.filehandler.re.FileNotFoundException;
+import org.fungover.storm.filehandler.re.FileRequestHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
