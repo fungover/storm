@@ -42,9 +42,8 @@ public class ClientHandler implements Runnable {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            HttpResponseStatusCodes statusCode = new HttpResponseStatusCodes();
             if (e.getMessage().contains("500"))
-                LOGGER.error(statusCode.getError500());
+                LOGGER.error("500 Internal Server Error\r\n");
             else
                 LOGGER.error(e.getMessage());
         }
