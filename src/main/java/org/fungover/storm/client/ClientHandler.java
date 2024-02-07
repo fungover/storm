@@ -34,19 +34,18 @@ public class ClientHandler implements Runnable {
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            String input = in.readLine(); // This reads the request line
+            String input = in.readLine();
             byte[][] response;
 
-            // Update the method call to match the newly added method in HttpParser
-            if (Teapot.isCoffeeRequest(HttpParser.getPath(input))) { // Now correctly calling getPath
+            if (Teapot.isCoffeeRequest(HttpParser.getPath(input))) {
                 response = Teapot.write418Response();
             } else {
                 response = getResponse(input);
             }
 
-            out.write(response[0]); // Write headers
+            out.write(response[0]);
             if (response.length > 1 && response[1] != null) {
-                out.write(response[1]); // Write body if it exists
+                out.write(response[1]);
             }
 
             in.close();
