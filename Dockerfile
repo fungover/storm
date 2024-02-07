@@ -1,4 +1,4 @@
-FROM maven:3.9.6-openjdk-21-slim as build
+FROM maven:3-openjdk-18-slim as build
 COPY ./ /src
 RUN mvn -f /src/pom.xml clean package
 
