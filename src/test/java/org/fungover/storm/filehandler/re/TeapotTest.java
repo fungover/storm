@@ -43,7 +43,7 @@ public class TeapotTest {
 
     @Test
     public void testMalformedHttpRequest() {
-        String malformedRequest = "GET /coffee"; // Missing HTTP version
+        String malformedRequest = "GET /coffee";
         Map<String, String> parsedHeaders = HttpParser.getRequestHeaders(malformedRequest);
         assertTrue(parsedHeaders.isEmpty(), "Malformed requests should not produce valid headers.");
     }
