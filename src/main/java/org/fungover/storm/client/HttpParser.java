@@ -10,6 +10,7 @@ public class HttpParser {
     private HttpParser() {
     }
 
+
     public static Map<String, String> getRequestHeaders(String headers) {
         List<String> lines = headers.lines().toList();
         String[] firstLine = lines.get(0).split(" ");
@@ -19,6 +20,18 @@ public class HttpParser {
         else
             return Map.of();
     }
+
+
+    public static String getPath(String requestLine) {
+        String[] properties = requestLine.split(" ");
+        if (validRequest(properties)) {
+            return properties[1];
+        } else {
+            return "";
+        }
+    }
+
+
 
     private static Map<String, String> requestHeaders(List<String> lines, String[] firstLine) {
         Map<String, String> requestHeaders = new HashMap<>(parseFirstLine(firstLine));
@@ -40,7 +53,10 @@ public class HttpParser {
 
     private static String[] parseHeader(String header) {
         String[] properties = header.split(":");
-        return new String[]{properties[0].trim(), properties[1].trim()};
+        if (properties.length >= 2) {
+            return new String[]{properties[0].trim(), properties[1].trim()};
+        } else {
+            return new String[]{properties[0].trim(), ""};
+        }
     }
-
 }

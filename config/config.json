@@ -1,5 +1,5 @@
 {
-  "port": 8080,
+  "port": 8443,
   "webroot": "",
-  "type": "http"
+  "type": "https"
 }
