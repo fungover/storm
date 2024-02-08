@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.fungover.storm.filehandler.re.FileInfo;
 import org.fungover.storm.filehandler.re.FileNotFoundException;
 import org.fungover.storm.filehandler.re.FileRequestHandler;
+import org.fungover.storm.filehandler.re.ResponseCode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class ClientHandler implements Runnable {
             clientSocket.close();
         } catch (IOException e) {
             if (e.getMessage().contains("500"))
-                LOGGER.error("500 Internal Server Error\r\n");
+                LOGGER.error(ResponseCode.HTTP_RESPONSE_STATUS_CODES);
             else
                 LOGGER.error(e.getMessage());
         }
