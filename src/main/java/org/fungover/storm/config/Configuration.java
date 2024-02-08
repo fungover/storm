@@ -9,23 +9,26 @@ public class Configuration {
         return port;
     }
 
-    public void setPort(int port) {
+    public Configuration setPort(int port) {
         this.port = port;
+        return this;
     }
 
     public String getWebroot() {
         return webroot;
     }
 
-    public void setWebroot(String webroot) {
+    public Configuration setWebroot(String webroot) {
         this.webroot = webroot;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public String setType(String type) {
         this.type = type;
+        return type;
     }
 }
