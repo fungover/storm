@@ -17,7 +17,7 @@ import java.nio.file.Files;
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
     private final Socket clientSocket;
-    private final FileRequestHandler fileRequestHandler;
+    private FileRequestHandler fileRequestHandler;
 
     public ClientHandler(Socket socket, FileRequestHandler fileRequestHandler) {
         this.clientSocket = socket;
