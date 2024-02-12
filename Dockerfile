@@ -1,4 +1,4 @@
-FROM maven:3.9.6-eclipse-temurin-21 as build
+FROM maven:3-eclipse-temurin-21 as build
 COPY ./ /src
 RUN mvn -f /src/pom.xml clean package
 
