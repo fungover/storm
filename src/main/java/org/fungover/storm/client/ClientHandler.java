@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.fungover.storm.filehandler.re.FileInfo;
 import org.fungover.storm.filehandler.re.FileNotFoundException;
 import org.fungover.storm.filehandler.re.FileRequestHandler;
+import org.fungover.storm.filehandler.re.ResponseCode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,8 +17,7 @@ import java.nio.file.Files;
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
     private final Socket clientSocket;
-    private HttpResponseStatusCodes statusCode;
-    private FileRequestHandler fileRequestHandler;
+    private final FileRequestHandler fileRequestHandler;
 
     public ClientHandler(Socket socket, FileRequestHandler fileRequestHandler) {
         this.clientSocket = socket;
@@ -43,9 +43,8 @@ public class ClientHandler implements Runnable {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            statusCode = new HttpResponseStatusCodes();
             if (e.getMessage().contains("500"))
-                LOGGER.error(statusCode.getError500());
+                LOGGER.error(ResponseCode.HTTP_RESPONSE_STATUS_CODES);
             else
                 LOGGER.error(e.getMessage());
         }
