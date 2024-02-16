@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
+        with:
+          lfs: true
       - name: Get required JDK version from Maven project
         run: |
           JDK_VERSION=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)
@@ -23,6 +25,7 @@ jobs:
         with:
           ref: badges
           path: badges
+          lfs: true
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
