@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HttpParser {
 
-    private static final List<String> methods = List.of("GET", "POST", "PUT");
+    private static final List<String> methods = List.of("GET", "POST", "PUT", "HEAD");
     private static final int REQUEST_LINE_PROPERTIES = 3;
 
     private HttpParser() {
@@ -29,6 +29,10 @@ public class HttpParser {
         } else {
             return "";
         }
+    }
+
+    public static boolean isMethodSupported(String method) {
+        return methods.contains(method);
     }
 
 
