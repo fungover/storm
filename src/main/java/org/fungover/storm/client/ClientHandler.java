@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
@@ -60,6 +61,11 @@ public class ClientHandler implements Runnable {
     }
 
     private byte[][] getResponse(String input) throws IOException {
+        String method = HttpParser.getRequestMethod(input);
+        if (!HttpParser.isMethodSupported(method)) {
+            return get501Response();
+        }
+
         FileInfo fileInfo;
         byte[][] response;
         try {
@@ -73,6 +79,13 @@ public class ClientHandler implements Runnable {
         return response;
     }
 
+    private byte[][] get501Response() {
+        ResponseCode responseCode = ResponseCode.NOT_IMPLEMENTED;
+        String description = responseCode.getCode();
+        FileInfo fileInfo = new FileInfo(Path.of("/"), description.getBytes());
+        return fileRequestHandler.writeResponse(fileInfo, description);
+    }
+
     private byte[][] getFileNotFoundResponse(FileNotFoundException e) throws IOException {
         FileInfo fileInfo = fileRequestHandler.handleError(e.getParsedRequest(), e.getError404FileName(), e.getResponseCode());
         byte[][] response;
@@ -82,5 +95,12 @@ public class ClientHandler implements Runnable {
             response = fileRequestHandler.writeResponse(e.getResponseCode());
         }
         return response;
+    }
+
+    private void handleIOException(IOException e) {
+        if (e.getMessage().contains("500"))
+            LOGGER.error(ResponseCode.HTTP_RESPONSE_STATUS_CODES);
+        else
+            LOGGER.error(e.getMessage());
     }
 }
