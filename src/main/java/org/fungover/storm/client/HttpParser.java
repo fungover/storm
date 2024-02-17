@@ -35,7 +35,12 @@ public class HttpParser {
         return methods.contains(method);
     }
 
-
+    public static String getRequestMethod(String requestLine) {
+        String[] properties = requestLine.split(" ");
+        if (validRequest(properties)) {
+            return properties[0];} else {
+            return ""; }
+    }
 
     private static Map<String, String> requestHeaders(List<String> lines, String[] firstLine) {
         Map<String, String> requestHeaders = new HashMap<>(parseFirstLine(firstLine));
