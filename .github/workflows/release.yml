@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with :
+          lfs: true
 
       - name: Log in to the Container registry
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
