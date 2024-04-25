@@ -2,7 +2,7 @@ FROM maven:3.9.6-eclipse-temurin-21 as build
 COPY ./ /src
 RUN mvn -f /src/pom.xml clean package
 
-FROM eclipse-temurin:21.0.2_13-jre-alpine
+FROM eclipse-temurin:22.0.1_8-jre-alpine
 COPY --from=build /src/target/modules /app/modules
 COPY --from=build /src/target/storm.jar /app/storm.jar
 COPY --from=build /src/webroot /webroot
