@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HttpParser {
 
-    private static final List<String> methods = List.of("GET", "POST", "PUT");
+    private static final List<String> methods = List.of("GET", "POST", "PUT", "HEAD");
     private static final int REQUEST_LINE_PROPERTIES = 3;
 
     private HttpParser() {
@@ -31,7 +31,16 @@ public class HttpParser {
         }
     }
 
+    public static boolean isMethodSupported(String method) {
+        return methods.contains(method);
+    }
 
+    public static String getRequestMethod(String requestLine) {
+        String[] properties = requestLine.split(" ");
+        if (validRequest(properties)) {
+            return properties[0];} else {
+            return ""; }
+    }
 
     private static Map<String, String> requestHeaders(List<String> lines, String[] firstLine) {
         Map<String, String> requestHeaders = new HashMap<>(parseFirstLine(firstLine));
