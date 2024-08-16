@@ -6,6 +6,8 @@ import org.fungover.storm.filehandler.re.FileInfo;
 import org.fungover.storm.filehandler.re.FileNotFoundException;
 import org.fungover.storm.filehandler.re.FileRequestHandler;
 import org.fungover.storm.filehandler.re.ResponseCode;
+import org.fungover.storm.filehandler.re.Teapot;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +19,8 @@ import java.nio.file.Files;
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger("CLIENT_HANDLER");
     private final Socket clientSocket;
-    private FileRequestHandler fileRequestHandler;
+    private final FileRequestHandler fileRequestHandler;
+
 
     public ClientHandler(Socket socket, FileRequestHandler fileRequestHandler) {
         this.clientSocket = socket;
@@ -26,18 +29,26 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-         OutputStream out;
-         BufferedReader in;
+        OutputStream out;
+        BufferedReader in;
 
         try {
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String input = in.readLine();
-            byte[][] response = getResponse(input);
+            byte[][] response;
+
+            if (Teapot.isCoffeeRequest(HttpParser.getPath(input))) {
+                response = Teapot.write418Response();
+            } else {
+                response = getResponse(input);
+            }
 
             out.write(response[0]);
-            out.write(response[1]);
+            if (response.length > 1 && response[1] != null) {
+                out.write(response[1]);
+            }
 
             in.close();
             out.close();
@@ -54,6 +65,7 @@ public class ClientHandler implements Runnable {
         FileInfo fileInfo;
         byte[][] response;
         try {
+            LOGGER.info("INPUT: " + input);
             fileInfo = fileRequestHandler.handleRequest(input);
             response = fileRequestHandler.writeResponse(fileInfo);
         } catch (FileNotFoundException e) {
@@ -64,13 +76,13 @@ public class ClientHandler implements Runnable {
     }
 
     private byte[][] getFileNotFoundResponse(FileNotFoundException e) throws IOException {
-        FileInfo fileInfo;
+        FileInfo fileInfo = fileRequestHandler.handleError(e.getParsedRequest(), e.getError404FileName(), e.getResponseCode());
         byte[][] response;
-        fileInfo = fileRequestHandler.handleError(e.getParsedRequest(), e.getError404FileName(), e.getResponseCode());
         if (Files.exists(fileInfo.getPath())) {
             response = fileRequestHandler.writeResponse(fileInfo, e.getResponseCode());
-        } else
+        } else {
             response = fileRequestHandler.writeResponse(e.getResponseCode());
+        }
         return response;
     }
 }
